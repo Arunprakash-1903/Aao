@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "schemaTypes",
+			"path": "../Sanity-sudio/schemaTypes"
+		},
+		{
+			"name": "architecture-academics",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
