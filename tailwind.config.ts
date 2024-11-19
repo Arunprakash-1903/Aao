@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			montserrat: ['Montserrat', 'sans-serif'],
+			sourGummy:['Sour Gummy','sans-serif']
+		  },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

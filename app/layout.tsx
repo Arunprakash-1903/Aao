@@ -20,9 +20,16 @@ export default function RootLayout({
     <html lang="en">
      <Head>
         <link rel="icon" href="favicon.ico" />
-        {/* You can also use a .png, .svg, etc. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&display=swap"
+          rel="stylesheet"
+        />
+    
+<link href="https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></link>
       </Head>
-      <body>
+      <body className="bg-[#efefef]]] font-montserrat">
       
         {children}
       </body>

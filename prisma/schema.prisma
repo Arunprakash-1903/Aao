@@ -1,0 +1,11 @@
+datasource db {
+  provider = "mysql"
+  url      = "mysql://mwvhlumy_admin:Arun@2002@162.240.107.254:3306/mwvhlumy_AAO_db2"
+
+}
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+
+}
