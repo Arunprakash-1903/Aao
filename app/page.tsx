@@ -17,7 +17,7 @@ export default function Home() {
     </div>
     <h1 className="mt-6 text-3xl font-bold text-gray-800">Under Construction</h1>
     <p className="mt-2 text-lg text-gray-600">
-      Our website is under construction. We'll be here soon with our new awesome site.
+      Our website is under construction. We&apos;ll be here soon with our new awesome site.
     </p>
   </div>
   );
