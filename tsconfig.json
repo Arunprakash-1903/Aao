@@ -20,15 +20,25 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "app/components/admin/[[..index]]/pages.jsx", "app/admin/page.jsx", "app/admin/page.js", "app/v2024/page.tsx", "app/v2024/blogs/page.jsx", "app/v2024/layout.tsx"  ],
+    "**/*.tsx",
+    "app/components/admin/[[..index]]/pages.jsx",
+    "app/admin/page.jsx",
+    "app/admin/page.js",
+    "app/v2024/page.tsx",
+    "app/v2024/blogs/page.jsx",
+    "app/v2024/layout.tsx",
+    "app/components/NavBar.tsx"
+  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "prisma/prisma.js",
+    "app/api/auth/[...nextauth]/route.js"
   ]
 }

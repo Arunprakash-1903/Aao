@@ -1,4 +1,4 @@
-"use client"
+
 import React from 'react'
 import { getPost} from '../../../sanity/sanity.query';
 import { POST } from '../../../types';

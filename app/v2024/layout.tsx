@@ -1,9 +1,8 @@
 
 
-
 import NavBar from "../components/NavBar";
 
-//import "./globals.css";
+import "../globals.css"
 
   export default async function RootLayout({
     children,
@@ -12,6 +11,7 @@ import NavBar from "../components/NavBar";
     return (
       <html lang="en">
         <body>
+       
         <NavBar/>
         <div className="flex  justify-between p-2 px-4">
         <aside className="bg-gray-50  py-4 px-10 rounded-lg hidden lg:block  ">
@@ -32,6 +32,7 @@ import NavBar from "../components/NavBar";
   
 
         </div>
+  
         </body>
       </html>
     );

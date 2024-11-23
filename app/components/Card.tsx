@@ -5,6 +5,7 @@ import Image from 'next/image'
 import React from 'react'
 
 
+
 const Card = ({title,slug,smallDesc,publishedAt,image}) => {
   
   return (
@@ -25,6 +26,8 @@ const Card = ({title,slug,smallDesc,publishedAt,image}) => {
     </div>
   <Link href={`/v2024/blogs/${slug}`} className="text-blue-500 hover:underline font-medium">Read more</Link>
   </div>
+ 
+
   </Link>
 </div>
 

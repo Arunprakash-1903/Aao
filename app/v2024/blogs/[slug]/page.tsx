@@ -1,4 +1,4 @@
-"use client"
+
 import { PortableText } from 'next-sanity'
 import React from 'react'
 import { getPostBySlug, getRecentPost } from '../../../../sanity/sanity.query'

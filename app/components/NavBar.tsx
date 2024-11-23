@@ -1,21 +1,31 @@
+
 import Link from "next/link"
 import Image from "next/image"
+
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../lib/auth"
+import { LoginButton, LogoutButton } from "./auth";
+
 //import Sidebar from "./sideBar"
 //import { SidebarTrigger } from "@/components/ui/sidebar"
 
-function NavBar() {
+   async function  NavBar() {
+
+
+
+  const session=await getServerSession(authOptions)
   const styles={
     wrapper:"flex justify-center  items-center flex-1 bg-[#00ADB5] sticky top-0 z-50",
     container:"flex justify-between flex-1 flex-start items-center p-4",
     logoContainer:"flex items-center justify-between space-x-1",
     navLinks:""
   }
+  //{console.log(JSON.stringify(session))}
   return (
     <>
     
     <nav className={styles.wrapper}>
       <div className={styles.container}>
-        
         <div className={styles.logoContainer}>
         {/* <Sidebar/> */}
         <div className="flex justify-center items-center space-x-3">
@@ -35,13 +45,15 @@ function NavBar() {
 
 {/* sign */}
 <div>
-<button className="bg-blue-500 p-2 px-4 rounded text-white
-">Sign In
-</button>
+{!session?
+<LoginButton/>:
+   <LogoutButton/> }
 
 </div>
 
         </div>
+  
+
         </nav>
 
 

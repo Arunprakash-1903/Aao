@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "C:\\Users\\arunp\\Desktop\\AAO\\architecture-academics\\app\\globals.css"
 import Head from "next/head";
 
 //import NavBar from "./components/NavBar";
@@ -29,7 +29,7 @@ export default function RootLayout({
     
 <link href="https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></link>
       </Head>
-      <body className="bg-[#efefef]]] font-montserrat">
+      <body className="bg-[#efefef] font-montserrat">
       
         {children}
       </body>

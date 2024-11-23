@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output:'export',
+  // output:'export
+  // experimental:{
+  //   serverComponentsExternalPackages: ['bcrypt'],
+  // },
+  //serverComponentsExternalPackages: ['bcrypt'],
+  // webpack: (config) => {
+  //      config.externals = [...config.externals, 'bcrypt'];
+  //      return config;
+  //   },
   images: {
     remotePatterns: [{
       protocol: 'https',
