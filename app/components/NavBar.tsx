@@ -1,10 +1,12 @@
 
 import Link from "next/link"
+
 import Image from "next/image"
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth"
-import { LoginButton, LogoutButton } from "./auth";
+import { LoginButton} from "./auth";
+import Dropdown from "./dropdown"
 
 //import Sidebar from "./sideBar"
 //import { SidebarTrigger } from "@/components/ui/sidebar"
@@ -15,12 +17,12 @@ import { LoginButton, LogoutButton } from "./auth";
 
   const session=await getServerSession(authOptions)
   const styles={
-    wrapper:"flex justify-center  items-center flex-1 bg-[#00ADB5] sticky top-0 z-50",
+    wrapper:"flex justify-center  items-center flex-1 bg-gray-50 sticky top-0 z-50",
     container:"flex justify-between flex-1 flex-start items-center p-4",
     logoContainer:"flex items-center justify-between space-x-1",
     navLinks:""
   }
-  //{console.log(JSON.stringify(session))}
+  {console.log(JSON.stringify(session?.user.name[0]))}
   return (
     <>
     
@@ -47,7 +49,9 @@ import { LoginButton, LogoutButton } from "./auth";
 <div>
 {!session?
 <LoginButton/>:
-   <LogoutButton/> }
+    <Dropdown text={session?.user.name[0]}/>
+        
+        }
 
 </div>
 

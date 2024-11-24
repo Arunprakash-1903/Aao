@@ -3,8 +3,10 @@ import { NextResponse } from "next/server";
 import prisma from "../../../prisma/prisma"
 
 export async function POST(request:Request){
-    const {email,password}=await request.json()
-    if (!email || !password) {
+    const {email,password,name}=await request.json()
+   // console.log(email,password);
+    
+    if (!email || !password || !name) {
         return NextResponse.json(
           { message: 'Email and password are required.' },
           { status: 400 }
@@ -26,14 +28,14 @@ export async function POST(request:Request){
     
         // Create the user in the database
         const user = await prisma.user.create({
-          data: { email, password: hashedPassword },
+          data: { email, password: hashedPassword ,name},
         });
     
         return NextResponse.json(
           { message: 'User created successfully.', user },
           { status: 201 }
         );
-      } catch (error) {
+      } catch (error:any) {
         console.error('Signup error:', error);
         return NextResponse.json(
           { message: 'Internal server error.' },
