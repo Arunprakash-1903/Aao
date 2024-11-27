@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "C:\\Users\\arunp\\Desktop\\AAO\\architecture-academics\\app\\globals.css"
+import "./globals.css"
 import Head from "next/head";
 
 //import NavBar from "./components/NavBar";

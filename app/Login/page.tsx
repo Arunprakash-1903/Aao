@@ -1,13 +1,13 @@
 "use client";
 import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -21,7 +21,9 @@ export default function LoginPage() {
 
     if (!result?.ok) {
       console.error('Login failed.');
+      
     } else {
+     
       window.location.href = '/v2024'; // Redirect on success
     }
   };
@@ -69,6 +71,7 @@ export default function LoginPage() {
 
         {/* Create Account Button */}
         <div className="mt-4">
+      
           <button
             onClick={() => window.location.href = '/SignUp'} // Redirect to signup page
             className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-300 focus:ring focus:ring-blue-300 transition duration-300"
@@ -76,7 +79,9 @@ export default function LoginPage() {
             Create Account
           </button>
         </div>
+      
       </div>
+     
     </div>
   );
 }

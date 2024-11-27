@@ -16,6 +16,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
  export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/Login', // Path to your custom login page
+  //  signOut:'/'
     
   },
   
