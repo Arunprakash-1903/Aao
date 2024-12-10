@@ -1,6 +1,6 @@
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://mwvhlumy_admin:Arun@2002@162.240.107.254:3306/mwvhlumy_AAO_db2"
 
 }
 generator client {
@@ -9,7 +9,7 @@ generator client {
 model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
-  password String
+  password String?
   name    String?
 
 }

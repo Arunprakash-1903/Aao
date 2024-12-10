@@ -32,13 +32,14 @@ export default async function  Home() {
             
             </div>
           <div className="flex space-x-4 items-center text-xs text-black font-bold ">
-            <a href="/v2024/NataCourse" className="">NATA course</a>
-            <a href="#" className="">Courses</a>
-            <a href="#" className="">WorkShops</a>
-            <a href="#" className="">Jobs</a>
+          <a href="/v2024/NataCourses" className="">NATA course</a>
+            <a href="/v2024/Courses" className="">Courses</a>
+            <a href="/v2024/WorkShops" className="">WorkShops</a>
+            <a href="/v2024/Jobs" className="">Jobs</a>
    
             
-            <a href="#" className="">Surveys</a>
+            <a href="/v2024/Jobs" className="">Surveys</a>
+          
           
             {/* <div className="text-gray-600">icons.bdc@gmail.com</div> */}
             </div>
@@ -52,7 +53,7 @@ export default async function  Home() {
         {/* Left Section */}
         <div className="md:col-span-2">
           {/* Welcome Section */}
-          <h1 className="text-2xl font-semibold mb-4">Welcome, {session?.user?.name}</h1>
+          <h1 className="text-2xl font-semibold mb-4">Surveys</h1>
           <div className="bg-white rounded-lg shadow p-6">
             
            
@@ -62,7 +63,7 @@ export default async function  Home() {
                 alt="Mailbox"
                 className="w-70 h-70"
               />
-              <p className="mt-4 text-gray-500">You have no tasks.</p>
+            
             </div>
           </div>
         </div>

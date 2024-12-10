@@ -1,6 +1,6 @@
 
 
-import NavBar from "../components/NavBar";
+
 
 import "../globals.css"
 
@@ -12,7 +12,7 @@ import "../globals.css"
       <html lang="en">
         <body>
        
-        <NavBar/>
+        {/* <NavBar/>
         <div className="flex  justify-between p-2 px-4">
         <aside className="bg-gray-50  py-4 px-10 rounded-lg hidden lg:block  ">
       
@@ -25,14 +25,14 @@ import "../globals.css"
         <a href="#" className="block py-2 hover:bg-gray-100 rounded p-2"> FDPs</a> 
         <a href="/v2024/blogs" className="block py-2 hover:bg-gray-100 rounded p-2"> Blogs </a> 
       </nav>
-    </aside>
+    </aside> */}
   
-          {children}
+      
     
   
 
-        </div>
-  
+       {/* // </div> */}
+        {children}
         </body>
       </html>
     );

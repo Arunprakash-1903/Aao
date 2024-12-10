@@ -8,6 +8,7 @@ import { authOptions } from "../../lib/auth"
 import { LoginButton} from "./auth";
 import Dropdown from "./dropdown"
 
+
 //import Sidebar from "./sideBar"
 //import { SidebarTrigger } from "@/components/ui/sidebar"
 
@@ -16,13 +17,15 @@ import Dropdown from "./dropdown"
 
 
   const session=await getServerSession(authOptions)
+ 
+
   const styles={
     wrapper:"flex justify-center  items-center flex-1 bg-gray-50 sticky top-0 z-50",
     container:"flex justify-between flex-1 flex-start items-center p-4",
     logoContainer:"flex items-center justify-between space-x-1",
     navLinks:""
   }
-  {console.log(JSON.stringify(session?.user.name[0]))}
+  {console.log("session",session)}
   return (
     <>
     
