@@ -2,24 +2,31 @@ import { authOptions } from "@lib/auth";
 import { handleOut } from "app/handleOut";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { getWorkshop } from "../../../sanity/sanity.query";
+import {Workshop} from "../../../types";
+import Card from "app/components/Card";
 
 export default async function  Home() {
   const session=await getServerSession(authOptions)
- 
-
+  const workshops:Workshop[] =await getWorkshop()
+  //{console.log(workshops);}
+  {workshops.map(workshop=>(console.log(workshop.description)))}
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow">
+     
+      <header className="bg-white shadow top-0 sticky z-10">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <Link href="/v2024">
           <div className="flex items-center justify-center space-x-4">
         <img
               src="/logo.jpeg" // Replace with your logo image
               alt="Barry Wehmiller"
-              className="w-10 h-10 "
+              className="w-10 h-10 object-contain"
             />
           <div className="text-xl font-bold">Aao</div>
           </div>
+          </Link>
             {/* <div className=" flex space-x-28  text-xs text-gray-600 font-bold w-[100%]">
               <div>1</div>
               <div>2</div>
@@ -32,9 +39,9 @@ export default async function  Home() {
             
             </div>
           <div className="flex space-x-4 items-center text-xs text-black font-bold ">
-          <a href="/v2024/NataCourses" className="">NATA course</a>
+          <a href="/v2024/NataCourse" className="">NATA course</a>
             <a href="/v2024/Courses" className="">Courses</a>
-            <a href="/v2024/WorkShops" className="">WorkShops</a>
+            <a href="/v2024/workshop" className="">WorkShops</a>
             <a href="/v2024/Jobs" className="">Jobs</a>
    
             
@@ -61,9 +68,16 @@ export default async function  Home() {
               <img
                 src="/4gwr6brwjhu01.png" // Replace with your mailbox image
                 alt="Mailbox"
-                className="w-70 h-70"
+                className="w-50 h-50 mb-10"
               />
-              <p className="mt-4 text-gray-500">You have no tasks.</p>
+              <h3 className="ext-2xl font-semibold mb-4">Conducted Workshops</h3>
+              <div className="grid grid-cols-1 lg:grid-cols-3 p-4 gap-4">
+           
+               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+              </div>
             </div>
           </div>
         </div>
@@ -71,13 +85,13 @@ export default async function  Home() {
         {/* Sidebar Section */}
         <div>
           {/* Welcome Card */}
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
+          {/* <div className="bg-white rounded-lg shadow p-6 mb-6">
             <h3 className="text-lg font-semibold mb-2">Welcome</h3>
             <p className="text-gray-600">
               Thank you for your interest in sharing your gifts and talents with us. We look forward
               to learning more about you.
             </p>
-          </div>
+          </div> */}
 
           {/* About Us Section */}
           <div className="bg-white rounded-lg shadow p-6">

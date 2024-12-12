@@ -10,16 +10,18 @@ export default async function  Home() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow top-0 sticky z-10">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <Link href="/v2024">
           <div className="flex items-center justify-center space-x-4">
         <img
               src="/logo.jpeg" // Replace with your logo image
               alt="Barry Wehmiller"
-              className="w-10 h-10 "
+              className="w-10 h-10 object-contain"
             />
           <div className="text-xl font-bold">Aao</div>
           </div>
+          </Link>
             {/* <div className=" flex space-x-28  text-xs text-gray-600 font-bold w-[100%]">
               <div>1</div>
               <div>2</div>
@@ -32,13 +34,14 @@ export default async function  Home() {
             
             </div>
           <div className="flex space-x-4 items-center text-xs text-black font-bold ">
-            <a href="/v2024/NataCourses" className="">NATA course</a>
+          <a href="/v2024/NataCourse" className="">NATA course</a>
             <a href="/v2024/Courses" className="">Courses</a>
-            <a href="/v2024/WorkShops" className="">WorkShops</a>
+            <a href="/v2024/workshop" className="">WorkShops</a>
             <a href="/v2024/Jobs" className="">Jobs</a>
    
             
             <a href="/v2024/Jobs" className="">Surveys</a>
+          
           
             {/* <div className="text-gray-600">icons.bdc@gmail.com</div> */}
             </div>

@@ -6,11 +6,12 @@ import React from 'react'
 
 
 
-const Card = ({title,slug,smallDesc,publishedAt,image}) => {
+const Card = ({title,slug,type,smallDesc,publishedAt,image}) => {
+  console.log(smallDesc);
   
   return (
     
-<div className=" bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 p-5">
+<div className=" bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 p-5 w-30">
 <Link href={`/v2024/blogs/${slug}`}>
   <Image width={300} height={48} className="w-full h-48 object-cover" src={image}alt="Blog post image" />
 
@@ -24,7 +25,7 @@ const Card = ({title,slug,smallDesc,publishedAt,image}) => {
     <PortableText  value={smallDesc}/>
     </div>
     </div>
-  <Link href={`/v2024/blogs/${slug}`} className="text-blue-500 hover:underline font-medium">Read more</Link>
+  <Link href={`/v2024/${type}/${slug}`} className="text-blue-500 hover:underline text-sm">Read more</Link>
   </div>
  
 
