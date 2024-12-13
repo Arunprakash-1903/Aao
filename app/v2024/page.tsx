@@ -41,7 +41,7 @@ export default async function  Home() {
             <a href="/v2024/workshop" className="">WorkShops</a>
             <a href="/v2024/Jobs" className="">Jobs</a>
    
-            
+            <a href="/v2024/fdp" className="">FDP</a>
             <a href="/v2024/Jobs" className="">Surveys</a>
           
             {/* <div className="text-gray-600">icons.bdc@gmail.com</div> */}

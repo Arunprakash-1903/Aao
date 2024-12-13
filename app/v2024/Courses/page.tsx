@@ -38,7 +38,7 @@ export default async function  Home() {
             <a href="/v2024/Courses" className="">Courses</a>
             <a href="/v2024/workshop" className="">WorkShops</a>
             <a href="/v2024/Jobs" className="">Jobs</a>
-   
+            <a href="/v2024/fdp" className="">FDP</a>
             
             <a href="/v2024/Jobs" className="">Surveys</a>
           

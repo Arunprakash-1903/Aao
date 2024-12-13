@@ -2,14 +2,19 @@ import { authOptions } from "@lib/auth";
 import { handleOut } from "app/handleOut";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { getFDP} from "../../../sanity/sanity.query";
+import {FDP} from "../../../types";
+import Card from "app/components/Card";
 
 export default async function  Home() {
   const session=await getServerSession(authOptions)
- 
-
+  const workshops:FDP[] =await getFDP()
+  //{console.log(workshops);}
+  {workshops.map(workshop=>(console.log(workshop.description)))}
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
+     
       <header className="bg-white shadow top-0 sticky z-10">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/v2024">
@@ -38,7 +43,6 @@ export default async function  Home() {
             <a href="/v2024/Courses" className="">Courses</a>
             <a href="/v2024/workshop" className="">WorkShops</a>
             <a href="/v2024/Jobs" className="">Jobs</a>
-   
             <a href="/v2024/fdp" className="">FDP</a>
             <a href="/v2024/Jobs" className="">Surveys</a>
           
@@ -55,7 +59,7 @@ export default async function  Home() {
         {/* Left Section */}
         <div className="md:col-span-2">
           {/* Welcome Section */}
-          <h1 className="text-2xl font-semibold mb-4">Surveys</h1>
+          <h1 className="text-2xl font-semibold mb-4">Faculty Development Programme</h1>
           <div className="bg-white rounded-lg shadow p-6">
             
            
@@ -63,9 +67,16 @@ export default async function  Home() {
               <img
                 src="/4gwr6brwjhu01.png" // Replace with your mailbox image
                 alt="Mailbox"
-                className="w-70 h-70"
+                className="w-50 h-50 mb-10"
               />
-            
+              <h3 className="ext-2xl font-semibold mb-4">Conducted Faculty Development Programme</h3>
+              <div className="grid grid-cols-1 lg:grid-cols-3 p-4 gap-4">
+           
+               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+              </div>
             </div>
           </div>
         </div>
@@ -73,13 +84,13 @@ export default async function  Home() {
         {/* Sidebar Section */}
         <div>
           {/* Welcome Card */}
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
+          {/* <div className="bg-white rounded-lg shadow p-6 mb-6">
             <h3 className="text-lg font-semibold mb-2">Welcome</h3>
             <p className="text-gray-600">
               Thank you for your interest in sharing your gifts and talents with us. We look forward
               to learning more about you.
             </p>
-          </div>
+          </div> */}
 
           {/* About Us Section */}
           <div className="bg-white rounded-lg shadow p-6">

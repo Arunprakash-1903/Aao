@@ -1,15 +1,15 @@
 import { PortableText } from 'next-sanity'
 import React from 'react'
-import { getAuthorById, getWorkShopBySlug} from '../../../../sanity/sanity.query'
+import { getAuthorById, getFDPBySlug} from '../../../../sanity/sanity.query'
 import { handleOut } from "app/handleOut";
 import Image from "next/image"
 import { authOptions } from '@lib/auth'
 import { getServerSession } from 'next-auth/next'
 import Link from 'next/link'
 const BlogPage = async({params}) => {
-  const cpost=await getWorkShopBySlug(params?.slug)
+  const cfdp=await getFDPBySlug(params?.slug)
   const session=await getServerSession(authOptions)
- const cauthor=await getAuthorById(cpost?.author._ref)
+ const cauthor=await getAuthorById(cfdp?.author._ref)
   console.log(cauthor);
   
   return (
@@ -59,16 +59,16 @@ const BlogPage = async({params}) => {
       
     
       <div className="mb-8">
-        <Image src={cpost.image} width={1080} height={100} alt="Blog Post Image" className="object-contain rounded-lg shadow-md" />
+        <Image src={cfdp.image} width={1080} height={100} alt="Blog Post Image" className="object-contain rounded-lg shadow-md" />
       </div>
   
 
       <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">{cpost.title}</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">{cfdp.title}</h1>
         
 
         <article className="prose prose-lg max-w-none text-gray-700">
-        <PortableText value={cpost.body}/>  
+        <PortableText value={cfdp.body}/>  
         </article>
     
       </div>

@@ -92,3 +92,33 @@ export async function getPostBySlug(slug:string) {
     { slug }  // passing the slug as a parameter to the query
   );
 }
+export async function getFDP() {
+  return client.fetch(
+    groq`*[_type=='fdp']{
+        _id,
+          title,
+          _type,
+          description,
+          "slug":slug.current,
+          publishedAt,
+          "image":mainImage.asset->url,
+        
+        
+      }`
+  );
+}
+export async function getFDPBySlug(slug:string) {
+  return client.fetch(
+    groq`*[_type == 'fdp' && slug.current == $slug][0]{
+      _id,
+      title,
+      "slug": slug.current,
+      publishedAt,
+      "image": mainImage.asset->url,
+      description,
+      body,
+      author,
+    }`,
+    { slug }  // passing the slug as a parameter to the query
+  );
+}

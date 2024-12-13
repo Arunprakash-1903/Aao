@@ -20,3 +20,15 @@ export type Workshop={
    
 
 }
+export type FDP={
+    _id:string,
+    _type:string,
+    title:string,
+    description:any,
+    slug:string,
+    publishedAt:string,
+    image:string,
+    author:any,
+   
+
+}
