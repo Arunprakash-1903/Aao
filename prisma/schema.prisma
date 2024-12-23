@@ -6,10 +6,35 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+enum UserRole{
+  ADMIN
+  USER
+}
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  password String?
-  name    String?
+  id               Int        @id @default(autoincrement())
+  email            String     @unique
+  password         String?
+  name             String?
+  role             UserRole   @default(USER)
+  purchasedCourses Purchase[] // Many-to-many relationship via the Purchase model
+}
 
+model Course {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  createdAt   DateTime   @default(now())
+  purchases   Purchase[] // Many-to-many relationship via the Purchase model
+}
+
+model Purchase {
+  id         Int     @id @default(autoincrement())
+  userId     Int
+  courseId   Int
+  purchasedAt DateTime @default(now())
+
+  user       User    @relation(fields: [userId], references: [id])
+  course     Course  @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId]) // Ensure a user cannot purchase the same course twice
 }

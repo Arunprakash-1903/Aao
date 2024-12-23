@@ -81,13 +81,13 @@ GoogleProvider({
 ],
   callbacks: {
     session: ({ session, token }) => {
-       console.log('Session Callback', { session, token })
+      //console.log('Session Callback', { session, token })
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
-          randomKey: token.randomKey
+          role: token.role
         }
       }
     },
@@ -111,15 +111,19 @@ GoogleProvider({
       
       return true
     },
-    jwt: ({ token, user }) => {
-      console.log('JWT Callback', { token, user })
+    jwt: async ({ token, user }) => {
+      //console.log('JWT Callback', { token})
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (user) {
-        const u = user as unknown as any
+        const u =await prisma.user.findUnique({
+          where: { email: token.email },
+        })
+        console.log(u);
+        
         return {
           ...token,
           id: u.id,
-          randomKey: u.randomKey
+          role:u.role
         }
       }
       return token

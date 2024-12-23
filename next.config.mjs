@@ -20,7 +20,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'fonts.googleapis.com',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
+
   ]},
 };
 

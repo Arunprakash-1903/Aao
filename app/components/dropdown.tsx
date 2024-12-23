@@ -4,16 +4,14 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
+ 
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "./dropdown-menu"
-  import {
-    Avatar,
-    AvatarFallback,
-    
-  } from "./avatar"
+
 import { signOut } from 'next-auth/react'
+import Link from 'next/link'
+
 //session?.user.name[0]
 
 const Dropdown = ({text}) => {
@@ -21,15 +19,24 @@ const Dropdown = ({text}) => {
     <DropdownMenu>
     <DropdownMenuTrigger>
       
-    <Avatar className="cursor-pointer">
+    {/* <Avatar className="cursor-pointer">
 
 <AvatarFallback>{text}</AvatarFallback>
-</Avatar>
+</Avatar> */}
+<div className=" text-gray-400 font-normal cursor-pointer" >{text}</div>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
-      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+      {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
+      <DropdownMenuItem >Profile</DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem onClick={()=>{signOut()}}>Sign Out</DropdownMenuItem>
+      <Link href="/v2024/Mycourses">
+      <DropdownMenuItem >My courses</DropdownMenuItem>
+      </Link>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem onClick={()=>{signOut()
+      
+      }}>Sign Out</DropdownMenuItem>
+  
      
     </DropdownMenuContent>
   </DropdownMenu>

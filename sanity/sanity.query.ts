@@ -36,9 +36,26 @@ export async function getWorkshop() {
       }`
   );
 }
-export async function getRecentPost() {
+export async function getNataCourses(){
   return client.fetch(
-    groq`*[_type=='post' ] | order(_createdAt asc){
+    groq`*[_type=='course']{
+        _id,
+        id,
+          title,
+          _type,
+          description,
+          price,
+          "slug":slug.current,
+          publishedAt,
+          "image":mainImage.asset->url,
+        
+        
+      }`
+  );
+}
+export async function getRecentFDP() {
+  return client.fetch(
+    groq`*[_type=='fdp' ] | order(_createdAt asc){
       _id,
         title,
         "slug":slug.current,
@@ -74,6 +91,22 @@ export async function getWorkShopBySlug(slug:string) {
       description,
       body,
       author,
+    }`,
+    { slug }  // passing the slug as a parameter to the query
+  );
+}
+export async function getCourseBySlug(slug:string) {
+  return client.fetch(
+    groq`*[_type == 'course' && slug.current == $slug][0]{
+      _id,
+      id,
+      title,
+      "slug": slug.current,
+      
+      "image": mainImage.asset->url,
+      description,
+      price
+
     }`,
     { slug }  // passing the slug as a parameter to the query
   );

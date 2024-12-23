@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
+"use client"
+
 import "./globals.css"
 import Head from "next/head";
-
+import { SessionProvider } from 'next-auth/react';
 //import NavBar from "./components/NavBar";
 
 
-export const metadata: Metadata = {
-  title: "Aao",
-  description: "Aao",
+//  const metadata: Metadata = {
+//   title: "Aao",
+//   description: "Aao",
 
-};
+// };
 
 export default function RootLayout({
   children,
@@ -19,6 +20,8 @@ export default function RootLayout({
   return (
     <html lang="en">
      <Head>
+      <title>Aao</title>
+      
         <link rel="icon" href="favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
 
@@ -31,7 +34,9 @@ export default function RootLayout({
       </Head>
       <body className="bg-[#efefef] font-montserrat">
       
+      <SessionProvider>
         {children}
+        </SessionProvider>
       </body>
     </html>
   );

@@ -1,10 +1,11 @@
 import { authOptions } from "@lib/auth";
-import { handleOut } from "app/handleOut";
+
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { getWorkshop } from "../../../sanity/sanity.query";
 import {Workshop} from "../../../types";
 import Card from "app/components/Card";
+import Dropdown from "app/components/dropdown";
 
 export default async function  Home() {
   const session=await getServerSession(authOptions)
@@ -35,7 +36,7 @@ export default async function  Home() {
             <div className="flex flex-col  space-y-3">
               <div className="300 w-[400px]">
             
-            {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>:<div className="flex justify-end items-center text-xs"><div className=" text-gray-400 font-normal cursor-pointer" onClick={handleOut}>{session.user?.email}</div></div>}
+              {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>: <Dropdown  text={session.user?.email}/>}
             
             </div>
           <div className="flex space-x-4 items-center text-xs text-black font-bold ">
@@ -74,9 +75,7 @@ export default async function  Home() {
               <div className="grid grid-cols-1 lg:grid-cols-3 p-4 gap-4">
            
                {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
-               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
-               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
-               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+              
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import { authOptions } from "@lib/auth";
-import { handleOut } from "app/handleOut";
+import Dropdown from "app/components/dropdown";
+
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 
@@ -30,7 +31,7 @@ export default async function  Home() {
             <div className="flex flex-col  space-y-3">
               <div className="300 w-[400px]">
             
-            {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>:<div className="flex justify-end items-center text-xs"><div className=" text-gray-400 font-normal cursor-pointer" onClick={handleOut}>{session.user?.email}</div></div>}
+              {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>: <Dropdown  text={session.user?.email}/>}
             
             </div>
           <div className="flex space-x-4 items-center text-xs text-black font-bold ">

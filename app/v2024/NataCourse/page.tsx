@@ -1,12 +1,68 @@
 import { authOptions } from "@lib/auth";
-import { handleOut } from "app/handleOut";
+import CourseCard from "app/components/CourseCard";
+
 import { getServerSession } from "next-auth";
+import { getNataCourses } from "../../../sanity/sanity.query";
 import Link from "next/link";
+
+import Dropdown from "../../components/dropdown";
+//import { getNataCourses } from "sanity/sanity.query";
 
 export default async function  Home() {
   const session=await getServerSession(authOptions)
- 
+  const  courses=await getNataCourses()
+  async function fetchUserWithCourses(email: string) {
+    try {
+      const response = await fetch('http://localhost:3000/api/purchased', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Something went wrong');
+      }
+  
+      const data = await response.json();
+    //  console.log('User with Purchased Courses:', data);
+     
+      return data;
+    }  catch (err) {
+     console.log(err);
+     
+    } finally {
+   
+    }
+  }
+  
+  const data=await fetchUserWithCourses(session?.user?.email)
+  const pc=data?.purchasedCourses
+  console.log("pc-->",pc);
+  console.log("courses-->",courses)
+  const list=[]
+  if(data){
+pc.forEach((c:any)=>{
+list.push(c.course.id)
+})
 
+
+  }
+  console.log(list);
+
+  const check=(list:number[],id:string)=>{
+    let flag=false
+list.forEach((l)=>{
+  if(l==parseInt(id)){
+    flag=true
+  }
+})
+    return flag
+  }
+  
+  
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -30,8 +86,12 @@ export default async function  Home() {
             <div className="flex flex-col  space-y-3">
               <div className="300 w-[400px]">
             
-            {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>:<div className="flex justify-end items-center text-xs"><div className=" text-gray-400 font-normal cursor-pointer" onClick={handleOut}>{session.user?.email}</div></div>}
-            
+           {/* {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>:<div className="flex justify-end items-center text-xs"><div className=" text-gray-400 font-normal cursor-pointer" onClick={handleOut}>{session.user?.email}</div></div>} */}
+           <div className="flex justify-end items-center text-xs"> 
+
+           {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>: <Dropdown  text={session.user?.email}/>}
+            </div>
+
             </div>
           <div className="flex space-x-4 items-center text-xs text-black font-bold ">
           <a href="/v2024/NataCourse" className="">NATA course</a>
@@ -60,19 +120,21 @@ export default async function  Home() {
           <div className="bg-white rounded-lg shadow p-6">
             
            
-            <div className="flex flex-col items-center justify-center mt-8">
-              <img
-                src="/4gwr6brwjhu01.png" // Replace with your mailbox image
-                alt="Mailbox"
-                className="w-70 h-70"
-              />
-              <p className="mt-4 text-gray-500">You have no tasks.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+           {console.log(list[0]==1)}
+           {courses.map((course: any,index:any)=>(
+            <CourseCard key={index} title={course.title} image={course.image} price={course.price} slug={course.slug} btn={check(list,course.id)}/>
+
+           ))}
+    
+          
+           
             </div>
           </div>
         </div>
 
         {/* Sidebar Section */}
-        <div>
+       <div>
           {/* Welcome Card */}
           <div className="bg-white rounded-lg shadow p-6 mb-6">
             <h3 className="text-lg font-semibold mb-2">Welcome</h3>
@@ -97,7 +159,7 @@ export default async function  Home() {
             <a href="#" className="text-blue-500 font-medium mt-2 inline-block">Read More &rarr;</a>
           </div>
           
-        </div>
+        </div> 
       </main>
     </div>
   );
