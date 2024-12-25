@@ -17,7 +17,7 @@ const payload=await req.json();
         
       },
    });
-  return NextResponse.json({message: ' created course' });
+  return NextResponse.json({message: ' created course',course });
  
   } catch (error) {
     console.error(error);
