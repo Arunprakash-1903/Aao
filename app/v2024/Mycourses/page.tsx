@@ -148,7 +148,9 @@ const Page = () => {
                       <div className="p-4">
                         <div className='flex items-center justify-between space-x-6'>
                         <h2 className="text-xl font-bold text-gray-800">{course?.title}</h2>
-                        <button  className="w-full sm:w-auto py-3 px-6 bg-indigo-600 text-white text-lg font-semibold rounded-md shadow-md hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        <button onClick={()=>{
+                      window.location.href=`/v2024/Mycourses/${course._id}`
+                        }} className="w-full sm:w-auto py-3 px-6 bg-indigo-600 text-white text-lg font-semibold rounded-md shadow-md hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               Learn
             </button>
             </div>

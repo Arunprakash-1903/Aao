@@ -9,18 +9,20 @@ const CreateCourseForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!id || !title) {
+    if ( !title) {
       toast.error('Please fill in all fields.');
       return;
     }
 
     try {
+      console.log(id,title);
+      
       const response = await fetch('/api/Course', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id, title }),
+        body: JSON.stringify({ id:"1", title :title}),
       });
 
       if (!response.ok) {
@@ -42,17 +44,7 @@ const CreateCourseForm = () => {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Create a New Course</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="id" className="block text-sm font-medium text-gray-700 mb-2">Course ID</label>
-            <input
-              type="text"
-              id="id"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter course ID"
-            />
-          </div>
+          
 
           <div className="mb-4">
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">Course Title</label>

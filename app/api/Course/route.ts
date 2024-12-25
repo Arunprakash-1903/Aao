@@ -4,20 +4,20 @@ import { NextResponse } from 'next/server';
 
 export  async function POST(req:Request) {
  
-const { id,title } =await req.json();
-//console.log(await req.json());
+const payload=await req.json();
+
 
 
   try {
-   // console.log(id,title);
+   
     const course = await prisma.course.create({
       data: {
-         id:parseInt(id),
-        title,
+       
+        title:payload?.title,
         
       },
    });
-  return NextResponse.json({message: ' created course' ,course});
+  return NextResponse.json({message: ' created course' });
  
   } catch (error) {
     console.error(error);
