@@ -1,9 +1,9 @@
 "use client"
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
+
 import React, { useEffect, useState } from 'react'
 import { getCourseBySlug } from '../../../sanity/sanity.query';
-import Dropdown from 'app/components/dropdown';
+
 //import course from 'schemaTypes/course';
 
 const Page = () => {
@@ -75,50 +75,7 @@ const Page = () => {
   return (
    <>
           {/* Header */}
-          <header className="bg-white shadow top-0 sticky z-10">
-            <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-              <Link href="/v2024">
-                <div className="flex items-center justify-center space-x-4">
-                  <img
-                    src="/logo.jpeg" // Replace with your logo image
-                    alt="Barry Wehmiller"
-                    className="w-10 h-10 object-contain"
-                  />
-                  <div className="text-xl font-bold">Aao</div>
-               </div>
-              </Link>
-    
-              <div className="flex flex-col space-y-3">
-                <div className="300 w-[400px]">
-                  <div className="flex justify-end items-center text-xs">
-                  {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>: <Dropdown  text={session.user?.email}/>}
-
-                  </div>
-                </div>
-                <div className="flex space-x-4 items-center text-xs text-black font-bold">
-                  <a href="/v2024/NataCourse" className="">
-                    NATA course
-                  </a>
-                  <a href="/v2024/Courses" className="">
-                    Courses
-                  </a>
-                  <a href="/v2024/workshop" className="">
-                    WorkShops
-                  </a>
-                  <a href="/v2024/Jobs" className="">
-                    Jobs
-                  </a>
-                  <a href="/v2024/fdp" className="">
-                    FDP
-                  </a>
-                  <a href="/v2024/Jobs" className="">
-                    Surveys
-                  </a>
-                </div>
-              </div>
-            </div>
-          </header>
-    
+        
           {/* Main Content */}
           <div className="p-6 bg-gray-100 min-h-screen">
             <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">

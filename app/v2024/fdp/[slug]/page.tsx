@@ -5,10 +5,10 @@ import { getAuthorById, getFDPBySlug, getRecentFDP } from '../../../../sanity/sa
 import Image from 'next/image';
 import { authOptions } from '@lib/auth';
 import { getServerSession } from 'next-auth/next';
-import Link from 'next/link';
+
 import { FDP } from 'types';
 import RecentPost from 'app/components/RecentPost';
-import Dropdown from 'app/components/dropdown';
+
 
 const BlogPage = async ({
   params,
@@ -24,35 +24,7 @@ const BlogPage = async ({
 
   return (
     <>
-      <header className="bg-white shadow top-0 sticky z-10">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/v2024">
-            <div className="flex items-center justify-center space-x-4">
-              <img
-                src="/logo.jpeg"
-                alt="Barry Wehmiller"
-                className="w-10 h-10 object-contain"
-              />
-              <div className="text-xl font-bold">Aao</div>
-            </div>
-          </Link>
-          <div className="flex flex-col space-y-3">
-            <div className="300 w-[400px]">
-            {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>: <Dropdown  text={session.user?.email}/>}
-
-            </div>
-            <div className="flex space-x-4 items-center text-xs text-black font-bold">
-              <a href="/v2024/NataCourse">NATA course</a>
-              <a href="/v2024/Courses">Courses</a>
-              <a href="/v2024/workshop">WorkShops</a>
-              <a href="/v2024/Jobs">Jobs</a>
-              <a href="/v2024/fdp">FDP</a>
-              <a href="/v2024/Jobs">Surveys</a>
-            </div>
-          </div>
-        </div>
-      </header>
-
+     
       <div className="bg-gray-100 py-10">
         <div className="container mx-auto px-4 lg:px-8 flex flex-col lg:flex-row gap-8">
           {/* Left Column */}

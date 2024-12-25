@@ -12,7 +12,7 @@ const Card = ({title,slug,type,smallDesc,publishedAt,image}) => {
   return (
     
 <div className=" bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 p-5 w-30">
-<Link href={`/v2024/blogs/${slug}`}>
+
   <Image width={300} height={48} className="w-full h-48 object-cover" src={image}alt="Blog post image" />
 
   <div className="p-6">
@@ -29,7 +29,7 @@ const Card = ({title,slug,type,smallDesc,publishedAt,image}) => {
   </div>
  
 
-  </Link>
+  
 </div>
 
 
