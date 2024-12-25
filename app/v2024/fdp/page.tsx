@@ -1,6 +1,4 @@
-import { authOptions } from "@lib/auth";
 
-import { getServerSession } from "next-auth";
 
 import { getFDP, getRecentFDP} from "../../../sanity/sanity.query";
 import {FDP} from "../../../types";
@@ -10,7 +8,6 @@ import RecentPost from "app/components/RecentPost";
 
 
 export default async function  Home() {
-  const session=await getServerSession(authOptions)
   const workshops:FDP[] =await getFDP()
   const rfdp:FDP[] =await getRecentFDP()
  

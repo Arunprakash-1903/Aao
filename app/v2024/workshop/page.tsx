@@ -1,14 +1,12 @@
-import { authOptions } from "@lib/auth";
 
-import { getServerSession } from "next-auth";
-import Link from "next/link";
+
 import { getWorkshop } from "../../../sanity/sanity.query";
 import {Workshop} from "../../../types";
 import Card from "app/components/Card";
-import Dropdown from "app/components/dropdown";
+
 
 export default async function  Home() {
-  const session=await getServerSession(authOptions)
+
   const workshops:Workshop[] =await getWorkshop()
   //{console.log(workshops);}
   {workshops.map(workshop=>(console.log(workshop.description)))}

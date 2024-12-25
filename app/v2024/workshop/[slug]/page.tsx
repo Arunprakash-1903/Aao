@@ -3,12 +3,11 @@ import React from 'react'
 import { getAuthorById, getWorkShopBySlug} from '../../../../sanity/sanity.query'
 
 import Image from "next/image"
-import { authOptions } from '@lib/auth'
-import { getServerSession } from 'next-auth/next'
+
 
 const BlogPage = async({params}) => {
   const cpost=await getWorkShopBySlug(params?.slug)
-  const session=await getServerSession(authOptions)
+
  const cauthor=await getAuthorById(cpost?.author._ref)
   console.log(cauthor);
   

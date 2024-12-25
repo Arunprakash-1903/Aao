@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from 'next-auth/react';
+
 import { useState } from "react";
 
 const chapters = [
@@ -10,7 +10,7 @@ const chapters = [
 
 export default function CoursePage() {
   const [currentVideo, setCurrentVideo] = useState(chapters[0].videoUrl);
-  const { data: session} = useSession();
+
   return (<>
    
     <div className="min-h-screen bg-gray-100 p-6">

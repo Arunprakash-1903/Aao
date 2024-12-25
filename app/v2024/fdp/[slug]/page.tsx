@@ -3,8 +3,6 @@ import React from 'react';
 import { getAuthorById, getFDPBySlug, getRecentFDP } from '../../../../sanity/sanity.query';
 
 import Image from 'next/image';
-import { authOptions } from '@lib/auth';
-import { getServerSession } from 'next-auth/next';
 
 import { FDP } from 'types';
 import RecentPost from 'app/components/RecentPost';
@@ -18,7 +16,6 @@ const BlogPage = async ({
   console.log(params);
   
   const cfdp = await getFDPBySlug((await params)?.slug);
-  const session = await getServerSession(authOptions);
   const rfdp: FDP[] = await getRecentFDP(); // Recent FDP
   const cauthor = await getAuthorById(cfdp?.author._ref);
 
