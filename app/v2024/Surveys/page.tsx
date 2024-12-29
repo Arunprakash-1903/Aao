@@ -1,6 +1,6 @@
 
 
-export default async function  Home() {
+export default  function  Home() {
 
  
 
@@ -22,7 +22,7 @@ export default async function  Home() {
               <img
                 src="/4gwr6brwjhu01.png" // Replace with your mailbox image
                 alt="Mailbox"
-                className="w-70 h-70"
+                className="w-[70px] h-[70px]"
               />
             
             </div>

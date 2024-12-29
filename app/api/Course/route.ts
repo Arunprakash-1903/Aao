@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     // Create course with attachments
     
 
-    return NextResponse.json({ message: "Course created successfully!" });
+    return NextResponse.json({ message: "Course created successfully!",course });
   } catch (error) {
     console.error("Error creating course:", error);
     return NextResponse.json({ message: "Failed to create course" }, { status: 500 });

@@ -34,7 +34,7 @@ export default function CoursePage() {
   const [currentVideo, setCurrentVideo] = useState("");
   const [courseDataV, setCourseDataV] = useState<CourseDB>();
   const { id }: { id: string } = useParams();
-  const [course, setCourse] = useState<Course>();
+ 
   const { width, height } = useWindowSize();
   const [confettiVisible, setConfettiVisible] = useState(false);
 
@@ -67,7 +67,7 @@ export default function CoursePage() {
 
     const fetchData = async () => {
       const data: Course = await getCourseBySlug(id);
-      setCourse(data);
+  
       getCourseData(data.id);
     };
 

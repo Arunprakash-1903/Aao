@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../../prisma/prisma"; // Adjust the path to your Prisma client as necessary
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
-  const attachmentId = parseInt(params.id);
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const attachmentId = parseInt((await params).id);
 
   // Validate the attachment ID
   if (isNaN(attachmentId)) {
