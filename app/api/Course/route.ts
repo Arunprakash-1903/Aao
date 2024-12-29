@@ -1,26 +1,38 @@
+import prisma from "../../../prisma/prisma";
+import { NextResponse } from "next/server";
 
-import prisma from "../../../prisma/prisma" // Make sure to set up Prisma client in lib/prisma.ts
-import { NextResponse } from 'next/server';
-
-export  async function POST(req:Request) {
- 
-const payload=await req.json();
-
-
-
+export async function POST(req: Request) {
+  type Attachment = {
+    title: string;
+    url: string;
+    completed:boolean
+  };
+  
+  type Payload = {
+    title: string;
+    attachments: Attachment[];
+  };
   try {
-   
+ 
+
+    const { title, attachments }:Payload =await req.json();;
+
+  console.log(attachments);
+  
     const course = await prisma.course.create({
       data: {
-       
-        title:payload?.title,
-        
+        title,
+        attachments: {
+          create:attachments
+        },
       },
-   });
-  return NextResponse.json({message: ' created course',course });
- 
+    });
+    // Create course with attachments
+    
+
+    return NextResponse.json({ message: "Course created successfully!" });
   } catch (error) {
-    console.error(error);
-    NextResponse.json({ message: 'Failed to create course' });
+    console.error("Error creating course:", error);
+    return NextResponse.json({ message: "Failed to create course" }, { status: 500 });
   }
 }

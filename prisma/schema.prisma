@@ -6,7 +6,7 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
-enum UserRole{
+enum UserRole {
   ADMIN
   USER
 }
@@ -20,11 +20,24 @@ model User {
 }
 
 model Course {
-  id          Int        @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   title       String
   description String?
-  createdAt   DateTime   @default(now())
-  purchases   Purchase[] // Many-to-many relationship via the Purchase model
+  createdAt   DateTime      @default(now())
+  purchases   Purchase[]    // Many-to-many relationship via the Purchase model
+  attachments Attachment[]  // One-to-many relationship with Attachment
+}
+
+model Attachment {
+  id         Int      @id @default(autoincrement())
+  title      String
+  url        String
+  completed  Boolean @default(false)
+  courseId   Int
+
+  course     Course   @relation(fields: [courseId], references: [id])
+
+  @@index([courseId]) // Optional for faster lookups by courseId
 }
 
 model Purchase {

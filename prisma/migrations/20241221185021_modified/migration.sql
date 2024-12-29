@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `Course` MODIFY `id` INTEGER NOT NULL;
