@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const CreateCourseForm = () => {
   const [title, setTitle] = useState("");
-  const [attachments, setAttachments] = useState([{ title: "", url: "" ,completed:false}]);
+  const [attachments, setAttachments] = useState([{ title: "", url: "" }]);
 
   const handleAttachmentChange = (index: number, field: string, value: string) => {
     const updatedAttachments = [...attachments];
@@ -13,7 +13,7 @@ const CreateCourseForm = () => {
   };
 
   const addAttachment = () => {
-    setAttachments([...attachments, { title: "", url: "",completed:false }]);
+    setAttachments([...attachments, { title: "", url: "" }]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,7 +39,7 @@ const CreateCourseForm = () => {
 
       toast.success("Course created successfully!");
       setTitle("");
-      setAttachments([{ title: "", url: "",completed:false }]);
+      setAttachments([{ title: "", url: ""}]);
     } catch (error) {
       console.error("Error:", error);
       toast.error("Failed to create course. Please try again.");
