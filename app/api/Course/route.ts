@@ -5,7 +5,7 @@ export async function POST(req: Request) {
   type Attachment = {
     title: string;
     url: string;
-    completed:boolean
+
   };
   
   type Payload = {
