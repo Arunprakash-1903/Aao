@@ -15,6 +15,11 @@ model User {
   email            String     @unique
   password         String?
   name             String?
+  profilePicture   String?
+  profileDocument  String?
+  contactNumber    String?
+  intro            String?
+  profileDesignation String?
   role             UserRole   @default(USER)
   purchasedCourses Purchase[] // Many-to-many relationship via the Purchase model
 }

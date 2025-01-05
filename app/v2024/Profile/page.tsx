@@ -1,35 +1,35 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 type FormData = {
-  salutation: string;
+
   firstName: string;
-  surName: string;
+
   profileDesignation: string;
-  institutionName: string;
-  registrationNumber: string;
-  institutionDetails: string;
+
   email: string;
   contactNumber: string;
-  promotions: string;
+
   intro: string;
   profilePicture: File | null;
   profileDocument: File | null;
 };
 
 const ProfilePage = () => {
+  const fileInput1 = useRef<HTMLInputElement>(null);
+  const fileInput2 = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState<FormData>({
-    salutation: "",
+   
     firstName: "",
-    surName: "",
+ 
     profileDesignation: "",
-    institutionName: "",
-    registrationNumber: "",
-    institutionDetails: "",
+   
+    
     email: "",
     contactNumber: "",
-    promotions: "",
+
     intro: "",
     profilePicture: null,
     profileDocument: null,
@@ -46,17 +46,40 @@ const ProfilePage = () => {
     const { name, files } = e.target;
     if (files && files.length > 0) {
       setFormData((prev) => ({ ...prev, [name]: files[0] }));
+      console.log(files);
+ 
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit =async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
+    const form = new FormData();
+    form.append("profilePicture", fileInput1.current.files[0]!);
+    form.append("profileDocument", fileInput2.current.files[0]!);
+    form.append("email",formData.email)
+    form.append("contactNumber",formData.contactNumber)
+    form.append("firstName",formData.firstName)
+    form.append("intro",formData.intro)
+    form.append("profileDesignation",formData.profileDesignation)
+   /// form.append("")
+
     // Add form submission logic here
+    const response =  await fetch("/api/upload", {
+      method: "POST",
+      body:form,
+    });
+   const data=await response.json();
+   if(data.status=="fail"){
+toast.error(data.error)
+   }else{
+    toast.success(data.status)
+   }
+    
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 py-10 px-4">
+      <Toaster/>
       <form
         onSubmit={handleSubmit}
         className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8 space-y-8"
@@ -64,55 +87,7 @@ const ProfilePage = () => {
         <h2 className="text-2xl font-bold text-blue-700 mb-4">Profile</h2>
 
         {/* Salutation */}
-        <div className="">
-          <label htmlFor="salutation" className="block text-sm font-medium text-gray-600">
-            Salutation or Title
-          </label>
-          <select
-            id="salutation"
-            name="salutation"
-            value={formData.salutation}
-            onChange={handleInputChange}
-            className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="">Select</option>
-            <option value="Mr">Mr</option>
-            <option value="Ms">Ms</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
 
-        {/* First Name */}
-        <div className="">
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-600">
-            First Name
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-
-        {/* Sur Name */}
-        <div>
-          <label htmlFor="surName" className="block text-sm font-medium text-gray-600">
-            Sur Name
-          </label>
-          <input
-            type="text"
-            id="surName"
-            name="surName"
-            value={formData.surName}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-
-        {/* Profile Designation */}
         <div>
           <label
             htmlFor="profileDesignation"
@@ -122,6 +97,7 @@ const ProfilePage = () => {
           </label>
           <select
             id="profileDesignation"
+            required
             name="profileDesignation"
             value={formData.profileDesignation}
             onChange={handleInputChange}
@@ -139,59 +115,30 @@ const ProfilePage = () => {
             <option value="Others">Others</option>
           </select>
         </div>
-
-        {/* Institution Name */}
-        <div>
-          <label
-            htmlFor="institutionName"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Institution Name (For Students)
+        {/* First Name */}
+        <div className="">
+          <label htmlFor="firstName" className="block text-sm font-medium text-gray-600">
+             Name
           </label>
           <input
+          
             type="text"
-            id="institutionName"
-            name="institutionName"
-            value={formData.institutionName}
+            id="firstName"
+            required
+            name="firstName"
+            value={formData.firstName}
             onChange={handleInputChange}
             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
-        {/* Registration Number */}
-        <div>
-          <label
-            htmlFor="registrationNumber"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Registration Number (For Architects)
-          </label>
-          <input
-            type="text"
-            id="registrationNumber"
-            name="registrationNumber"
-            value={formData.registrationNumber}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
+        {/* Sur Name */}
+      
 
-        {/* Institution Details */}
-        <div>
-          <label
-            htmlFor="institutionDetails"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Institution Details (For Institutions)
-          </label>
-          <textarea
-            id="institutionDetails"
-            name="institutionDetails"
-            value={formData.institutionDetails}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
+        {/* Profile Designation */}
+   
+
+      
 
         {/* Email Address */}
         <div>
@@ -200,6 +147,7 @@ const ProfilePage = () => {
           </label>
           <input
             type="email"
+            required
             id="email"
             name="email"
             value={formData.email}
@@ -218,6 +166,7 @@ const ProfilePage = () => {
           </label>
           <input
             type="text"
+            required
             id="contactNumber"
             name="contactNumber"
             value={formData.contactNumber}
@@ -227,35 +176,7 @@ const ProfilePage = () => {
         </div>
 
         {/* Promotions */}
-        <div>
-          <label className="block text-sm font-medium text-gray-600">
-            Can we contact you for promotions or updates?
-          </label>
-          <div className="mt-2 space-y-2">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="promotions"
-                value="Yes"
-                onChange={handleInputChange}
-                className="mr-2 focus:ring-blue-500"
-                checked={formData.promotions === "Yes"}
-              />
-              Yes
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="promotions"
-                value="No"
-                onChange={handleInputChange}
-                className="mr-2 focus:ring-blue-500"
-                checked={formData.promotions === "No"}
-              />
-              No
-            </label>
-          </div>
-        </div>
+        
 
         {/* Intro */}
         <div>
@@ -264,6 +185,7 @@ const ProfilePage = () => {
           </label>
           <textarea
             id="intro"
+            required
             name="intro"
             value={formData.intro}
             onChange={handleInputChange}
@@ -274,11 +196,13 @@ const ProfilePage = () => {
         {/* Profile Picture */}
         <div>
           <label htmlFor="profilePicture" className="block font-medium text-gray-700">
-            Upload your profile picture (optional)
+            Upload your profile picture
           </label>
           <input
             type="file"
             id="profilePicture"
+            
+            ref={fileInput1}
             name="profilePicture"
             accept="image/*"
             onChange={handleFileChange}
@@ -289,10 +213,12 @@ const ProfilePage = () => {
         {/* Profile Document */}
         <div>
           <label htmlFor="profileDocument" className="block font-medium text-gray-700">
-            Upload your profile  (optional)
+            Upload your profile  
           </label>
           <input
             type="file"
+           
+            ref={fileInput2}
             id="profileDocument"
             name="profileDocument"
             accept="application/pdf"

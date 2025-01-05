@@ -77,7 +77,7 @@ list.forEach((l)=>{
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
            {console.log(list[0]==1)}
            {courses.map((course: any,index:any)=>(
-            <CourseCard key={index} title={course.title} image={course.image} price={course.price} slug={course.slug} btn={check(list,course.id)}/>
+            <CourseCard key={index} title={course.title} image={course.image}  slug={course.slug} btn={check(list,course.id)}/>
 
            ))}
     

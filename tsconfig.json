@@ -43,7 +43,7 @@
     "app/v2024/blogs/page.jsx",
     "app/v2024/layout.tsx",
     "app/components/NavBar.tsx"
-, "app/api/upload/route.tsx"  ],
+, "app/api/upload/route.js"  ],
   "exclude": [
     "node_modules",
     "prisma/prisma.js",
