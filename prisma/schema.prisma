@@ -1,8 +1,10 @@
 datasource db {
   provider = "mysql"
-  url      = "mysql://mwvhlumy_admin:Arun@2002@162.240.107.254:3306/mwvhlumy_AAO_db2"
+  url      = env("DATABASE_URL")
 
 }
+//mysql://mwvhlumy_admin:Arun@2002@162.240.107.254:3306/mwvhlumy_AAO_db2
+// /"mysql://mwvhlumy_admin:Arun@2002@162.240.107.254:3306/mwvhlumy_AAO_db2"
 generator client {
   provider = "prisma-client-js"
 }
@@ -55,4 +57,26 @@ model Purchase {
   course     Course  @relation(fields: [courseId], references: [id])
 
   @@unique([userId, courseId]) // Ensure a user cannot purchase the same course twice
+}
+model Job {
+  id             Int      @id @default(autoincrement())
+  jobTitle       String
+  jobDescription String
+  salary         Float?
+  
+  location       String?
+  Experience     Int?
+  company        String?
+  
+  company_about  String?
+
+  jobType        JobType
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+enum JobType {
+  Architech
+  Faculty
+  
+  Internship
 }
