@@ -2,11 +2,10 @@ import React from "react";
 import { getJobById } from "../../../../sanity/sanity.query";
 import { PortableText } from "next-sanity";
 import ApplyButton from "app/components/ApplyButton";
-import { sendEmail } from "@lib/mail";
+
 import prisma from "prisma/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@lib/auth";
-import toast, { Toaster } from "react-hot-toast";
 
 const JobCard =async ({
   params,
@@ -39,7 +38,7 @@ const JobCard =async ({
       }
   const iD=(await params)?.id as number
   const response=await fetch(`http://mwv.hlu.mybluehostin.me/api/jobs/get?id=${iD}`,{cache:"no-store"})
-  let jobs=await response.json()
+  const jobs=await response.json()
   const i=parseInt(iD+"")
   const res= await fetch('http://mwv.hlu.mybluehostin.me/api/jobs/applicants', {
     method: 'POST',

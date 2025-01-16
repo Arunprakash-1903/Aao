@@ -1,5 +1,5 @@
 
-import React, { cache } from "react";
+import React from "react";
 import JobCard from "../../components/JobCard";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ import Link from "next/link";
 const JobListings = async() => {
   
 const response=await fetch("http://mwv.hlu.mybluehostin.me/api/jobs/get/all",{cache:"no-store"})
-let jobs=await response.json()
+const jobs=await response.json()
 
 //   const jobs = [
 //     {
@@ -30,7 +30,7 @@ let jobs=await response.json()
       <h1 className="text-2xl font-bold mb-4">Job Listings</h1>
       <div className="grid gap-4">
         {jobs.map((job, index) => (
-            <Link href={`/v2024/Jobs/${job.id}`}>
+            <Link key={index} href={`/v2024/Jobs/${job.id}`}>
           <JobCard key={index} job={job} />
           </Link>
         ))}

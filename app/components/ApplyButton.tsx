@@ -1,9 +1,9 @@
 "use client"
 
-import { sendEmail } from "@lib/mail";
+
 import { SessionProvider, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+
 
 
 
@@ -11,7 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
  
 const ApplyButton=({jobId})=>{
   const { data: session} = useSession();
-  let list=[]
+  const list=[]
   const [data,setData]=useState<any>();
     //console.log(session);
      useEffect(()=>{
@@ -35,6 +35,7 @@ const ApplyButton=({jobId})=>{
           setData(d)
          
         }  catch (err) {
+         console.log(err);
          
         } finally {
         
@@ -111,7 +112,7 @@ list.forEach((l)=>{
             console.log(response.json);
             
           }
-          const res = await fetch(`/api/sendEmail`, {
+           await fetch(`/api/sendEmail`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

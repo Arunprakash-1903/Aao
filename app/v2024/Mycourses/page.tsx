@@ -23,7 +23,7 @@ const Page = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email:"arunprakash2225@gmail.com" }),
+          body: JSON.stringify({ email }),
         });
     
         if (!response.ok) {
