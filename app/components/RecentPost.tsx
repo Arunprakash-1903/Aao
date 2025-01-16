@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 
-const RecentPost = ({title,image,slug,publishedAt}) => {
+const RecentPost = ({type,title,image,slug,publishedAt}) => {
 
   
   
@@ -12,7 +12,7 @@ const RecentPost = ({title,image,slug,publishedAt}) => {
     <>
    
        <ul>
-        <Link href={`/v2024/fdp/${slug}`}>
+        <Link href={`/v2024/${type}/${slug}`}>
        <li className="mb-10 flex items-center justify-between space-x-4 w-[300px]">
        <Image width={100} height={100} src={image} alt="Blog 1" className=" object-cover rounded-lg" />
        <div className='flex-1'>

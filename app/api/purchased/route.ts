@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../prisma/prisma'; // Adjust the path to your Prisma client
 
+
 export  async function POST(req:Request) {
  
 
@@ -21,9 +22,15 @@ export  async function POST(req:Request) {
         purchasedCourses: {
           include: {
             course: true,
+           
           
           },
         },
+        appiledJobs:{
+          include:{
+          job:true
+          }
+        }
       },
     });
 

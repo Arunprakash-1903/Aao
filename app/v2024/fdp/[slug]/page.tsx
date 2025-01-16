@@ -65,7 +65,7 @@ const BlogPage = async ({
               <h2 className="text-xl font-bold text-gray-800 mb-4">Recent FDPs</h2>
               <ul className="space-y-4">
                 {rfdp.map((fdp,index:number) => (
-                   <RecentPost key={index} title={fdp.title} slug={fdp.slug} image={fdp.image} publishedAt={fdp.publishedAt.substring(0,10)}/>
+                   <RecentPost type={fdp._type} key={index} title={fdp.title} slug={fdp.slug} image={fdp.image} publishedAt={fdp.publishedAt.substring(0,10)}/>
                 ))}
                
               </ul>

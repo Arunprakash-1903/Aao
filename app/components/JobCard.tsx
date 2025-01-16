@@ -3,7 +3,7 @@ const JobCard = ({ job }) => {
       jobTitle,
       company,
 
-      experience,
+      Experience,
       salary,
       location,
       description,
@@ -46,7 +46,7 @@ console.log(createdAt);
   
         {/* Job Details */}
         <div className="flex justify-between text-sm text-gray-600 mt-2">
-          <p>🕒 {experience }</p>
+          <p>🕒 {Experience } yrs</p>
           <p>💰 {salary }</p>
           <p>📍 {location}</p>
         </div>

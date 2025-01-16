@@ -3,6 +3,7 @@ import React, { cache } from "react";
 import JobCard from "../../components/JobCard";
 import Link from "next/link";
 
+
 const JobListings = async() => {
   
 const response=await fetch("http://localhost:3000/api/jobs/get/all",{cache:"no-store"})

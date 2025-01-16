@@ -11,17 +11,17 @@ export async function POST(request) {
     const jobTitle = formData.get('jobTitle');
     const jobDescription = formData.get('jobDescription');
     const salary = parseFloat(formData.get('salary'));
-    const role = formData.get('role');
+    
     const jobType = formData.get('jobType');
 
     // Validate required fields
-    if (!jobTitle || !jobDescription || isNaN(salary) || !role || !jobType) {
+    if (!jobTitle || !jobDescription || isNaN(salary)  || !jobType) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // Create a new job entry
     const newJob = await prisma.job.create({
-      data: { jobTitle, jobDescription, salary, role, jobType },
+      data: { jobTitle, jobDescription, salary, jobType },
     });
 
     return NextResponse.json(newJob, { status: 201 });

@@ -1,6 +1,7 @@
 
 
-import { getWorkshop } from "../../../sanity/sanity.query";
+import RecentPost from "app/components/RecentPost";
+import { getRecentWorkShop, getWorkshop } from "../../../sanity/sanity.query";
 import {Workshop} from "../../../types";
 import Card from "app/components/Card";
 
@@ -8,6 +9,7 @@ import Card from "app/components/Card";
 export default async function  Home() {
 
   const workshops:Workshop[] =await getWorkshop()
+  const rworkshop:Workshop[]=await getRecentWorkShop()
   //{console.log(workshops);}
   {workshops.map(workshop=>(console.log(workshop.description)))}
   return (
@@ -26,11 +28,7 @@ export default async function  Home() {
             
            
             <div className="flex flex-col items-center justify-center mt-8">
-              <img
-                src="/4gwr6brwjhu01.png" // Replace with your mailbox image
-                alt="Mailbox"
-                className="w-50 h-50 mb-10"
-              />
+             
               <h3 className="ext-2xl font-semibold mb-4">Conducted Workshops</h3>
               <div className="grid grid-cols-1 lg:grid-cols-3 p-4 gap-4">
            
@@ -54,17 +52,10 @@ export default async function  Home() {
 
           {/* About Us Section */}
           <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold mb-2">About Us</h3>
-            <img
-              src="/logo.jpeg" // Replace with your logo image
-              alt="Barry Wehmiller"
-              className="w-16 h-16 mb-4"
-            />
-            <p className="text-gray-600">
-              Throughout Barry-Wehmiller, we hold ourselves to a unique measure of success: by the
-              way we touch the lives of people.
-            </p>
-            <a href="#" className="text-blue-500 font-medium mt-2 inline-block">Read More &rarr;</a>
+            <h3 className="text-lg font-semibold mb-2">Recent WorkShops</h3>
+            {rworkshop.map(((fdp,index)=>(
+             <RecentPost key={index} type={fdp._type} title={fdp.title} slug={fdp.slug} image={fdp.image} publishedAt={fdp.publishedAt.substring(0,10)}/>
+          )))}
           </div>
           
         </div>

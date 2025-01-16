@@ -21,6 +21,25 @@ export async function getPost() {
     }`
   );
 }
+export async function getJobById(id:number){
+return client.fetch(
+groq`*[_type=='jobs' && id==$id]{
+id,
+jobd,
+about,
+
+
+
+}
+
+
+
+
+`
+,{id}
+
+)
+}
 export async function getWorkshop() {
   return client.fetch(
     groq`*[_type=='workshop']{
@@ -60,8 +79,23 @@ export async function getRecentFDP() {
         title,
         "slug":slug.current,
         publishedAt,
+        _type,
         "image":mainImage.asset->url,
-        body,
+     
+      
+    }[0..2]`
+  );
+}
+export async function getRecentWorkShop() {
+  return client.fetch(
+    groq`*[_type=='workshop' ] | order(_createdAt asc){
+      _id,
+        title,
+        _type,
+        "slug":slug.current,
+        publishedAt,
+        "image":mainImage.asset->url,
+       
       
     }[0..2]`
   );

@@ -24,6 +24,7 @@ model User {
   profileDesignation String?
   role             UserRole   @default(USER)
   purchasedCourses Purchase[] // Many-to-many relationship via the Purchase model
+  appiledJobs      Applyed[]
 }
 
 model Course {
@@ -69,10 +70,24 @@ model Job {
   company        String?
   
   company_about  String?
+  email          String?
 
   jobType        JobType
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  apilicants     Applyed[]
+}
+model Applyed{
+  id Int         @id @default(autoincrement())
+  userId Int
+  jobId Int
+  AppiledAt DateTime @default(now())
+
+  user       User    @relation(fields: [userId], references: [id])
+  job        Job     @relation(fields: [jobId], references: [id])
+
+  @@unique([userId, jobId]) // Ensure a user cannot purchase the same course twice
+
 }
 enum JobType {
   Architech

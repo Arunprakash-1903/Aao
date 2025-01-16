@@ -6,7 +6,7 @@ export default {
       {
         name: 'id',
         title: 'ID',
-        type: 'string',
+        type: 'number',
         validation: (Rule) => Rule.required().error('A id is required'),
       },
     

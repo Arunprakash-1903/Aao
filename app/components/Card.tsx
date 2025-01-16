@@ -7,7 +7,7 @@ import React from 'react'
 
 
 const Card = ({title,slug,type,smallDesc,publishedAt,image}) => {
-  console.log(smallDesc);
+ 
   
   return (
     
