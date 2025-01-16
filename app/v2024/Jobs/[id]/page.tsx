@@ -38,10 +38,10 @@ const JobCard =async ({
         return daysAgo;
       }
   const iD=(await params)?.id as number
-  const response=await fetch(`http://localhost:3000/api/jobs/get?id=${iD}`,{cache:"no-store"})
+  const response=await fetch(`http://mwv.hlu.mybluehostin.me/api/jobs/get?id=${iD}`,{cache:"no-store"})
   let jobs=await response.json()
   const i=parseInt(iD+"")
-  const res= await fetch('http://localhost:3000/api/jobs/applicants', {
+  const res= await fetch('http://mwv.hlu.mybluehostin.me/api/jobs/applicants', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

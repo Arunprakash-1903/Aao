@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const JobListings = async() => {
   
-const response=await fetch("http://localhost:3000/api/jobs/get/all",{cache:"no-store"})
+const response=await fetch("http://mwv.hlu.mybluehostin.me/api/jobs/get/all",{cache:"no-store"})
 let jobs=await response.json()
 
 //   const jobs = [
