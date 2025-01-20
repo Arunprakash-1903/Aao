@@ -17,7 +17,7 @@ const BlogPage = async ({
   
   const cfdp = await getFDPBySlug((await params)?.slug);
   const rfdp: FDP[] = await getRecentFDP(); // Recent FDP
-  const cauthor = await getAuthorById(cfdp?.author._ref);
+ 
 
   return (
     <>
