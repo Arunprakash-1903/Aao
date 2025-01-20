@@ -1,6 +1,6 @@
 import { PortableText } from 'next-sanity';
 import React from 'react';
-import { getAuthorById, getFDPBySlug, getRecentFDP } from '../../../../sanity/sanity.query';
+import { getFDPBySlug, getRecentFDP } from '../../../../sanity/sanity.query';
 
 import Image from 'next/image';
 
