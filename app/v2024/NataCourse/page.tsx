@@ -2,16 +2,20 @@ import { authOptions } from "@lib/auth";
 import CourseCard from "app/components/CourseCard";
 
 import { getServerSession } from "next-auth";
-import { getNataCourses } from "../../../sanity/sanity.query";
+import { getMainPageContent, getNataCourses } from "../../../sanity/sanity.query";
+import { PortableText } from "next-sanity";
 
 //import { getNataCourses } from "sanity/sanity.query";
 
 export default async function  Home() {
   const session=await getServerSession(authOptions)
   const  courses=await getNataCourses()
+  const mainContent=await getMainPageContent("NataCourse")
+  console.log("-------------"+mainContent);
+  
   async function fetchUserWithCourses(email: string) {
     try {
-      const response = await fetch('http://localhost:3000/api/purchased', {
+      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/purchased`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,9 +77,19 @@ list.forEach((l)=>{
           <h1 className="text-2xl font-semibold mb-4">Nata Courses</h1>
           <div className="bg-white rounded-lg shadow p-6">
             
-           
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-           {console.log(list[0]==1)}
+          <div className="p-2">
+            <iframe width="800" height="400"
+src={mainContent[0].video}>
+</iframe>
+</div>
+<div className="p-4 m-3">
+  <h3 className="ext-2xl font-bold mb-4">About</h3>
+  <PortableText value={mainContent[0].description}/>
+</div>
+<div className="flex flex-col space-y-2 p-5">
+  <h3 className="ext-2xl font-bold ml-1">Modules</h3>
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-5">
+          
            {courses.map((course: any,index:any)=>(
             <CourseCard key={index} title={course.title} image={course.image}  slug={course.slug} btn={check(list,course.id)}/>
 
@@ -83,6 +97,7 @@ list.forEach((l)=>{
     
           
            
+            </div>
             </div>
           </div>
         </div>

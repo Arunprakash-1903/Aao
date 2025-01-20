@@ -17,12 +17,7 @@ export default {
           maxLength: 96
         }
       },
-      {
-        name: 'author',
-        title: 'Author',
-        type: 'reference',
-        to: {type: 'author'}
-      },
+    
       {
         name: 'mainImage',
         title: 'Main image',

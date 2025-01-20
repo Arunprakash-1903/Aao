@@ -72,6 +72,18 @@ export async function getNataCourses(){
       }`
   );
 }
+export  async function getMainPageContent(page:string){
+  return client.fetch(
+    groq`*[_type=='main' && page==$page] {
+    page,
+    description,
+    video
+    }`
+,{
+  page
+}
+  )
+}
 export async function getRecentFDP() {
   return client.fetch(
     groq`*[_type=='fdp' ] | order(_createdAt asc){

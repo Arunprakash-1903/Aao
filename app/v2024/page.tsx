@@ -1,10 +1,13 @@
 import { authOptions } from "@lib/auth";
 
 import { getServerSession } from "next-auth";
+import { getMainPageContent } from "../../sanity/sanity.query";
+import { PortableText } from "next-sanity";
 
 
 export default async function  Home() {
   const session=await getServerSession(authOptions)
+  const mainContent=await getMainPageContent('Home')
  
 
   return (
@@ -21,13 +24,15 @@ export default async function  Home() {
           <div className="bg-white rounded-lg shadow p-6">
             
            
-            <div className="flex flex-col items-center justify-center mt-8">
-              <img
-                src="/4gwr6brwjhu01.png" // Replace with your mailbox image
-                alt="Mailbox"
-                className="w-70 h-70"
-              />
-              <p className="mt-4 text-gray-500">You have no tasks.</p>
+            <div className="flex flex-col items-center justify-center space-y-8 p-2">
+            <iframe width="800" height="400"
+src={mainContent[0].video}>
+</iframe>
+              <div>
+                              
+                              <PortableText value={mainContent[0].description}/>
+                              
+                              </div>
             </div>
           </div>
         </div>

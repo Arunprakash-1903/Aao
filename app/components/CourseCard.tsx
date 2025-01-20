@@ -11,18 +11,25 @@ export default  function CourseCard({title,image,slug,btn}) {
         <div className="p-4">
           <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
           
-          <Link href={`/v2024/NataCourse/${slug}`}>
           
-         {!btn? <button
+          
+         {!btn? 
+          <Link href={`/v2024/NataCourse/${slug}`}>
+         <button
             className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Subscribe Now
-          </button>:<button
+          </button>
+          </Link>:
+          <Link href={`/v2024/Mycourses/${slug}`}>
+          <button
             className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Learn
-          </button>}
-          </Link>
+          </button>
+          </Link>}
+         
+     
         </div>
       </div>
     );

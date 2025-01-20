@@ -34,19 +34,7 @@ const BlogPage = async({params}) => {
     
       </div>
     </div>
-    <div className="mt-8 flex items-center space-x-4">
-          <img
-            src={cauthor.image} // Replace with author image
-            alt={cauthor.name}
-            className="w-16 h-16 rounded-full shadow-md"
-          />
-          <div>
-            <h3 className="text-xl font-bold text-gray-800">{cauthor.name}</h3>
-           <div className="text-sm text-gray-600">
-            <PortableText value={cauthor.bio}/>  
-            </div> 
-          </div>
-        </div>
+
     </div>
   </div>
          

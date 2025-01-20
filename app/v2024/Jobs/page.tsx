@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const JobListings = async() => {
   
-const response=await fetch("http://mwv.hlu.mybluehostin.me/api/jobs/get/all",{cache:"no-store"})
+const response=await fetch(`${process.env.NEXTAUTH_URL}/api/jobs/get/all`,{cache:"no-store"})
 const jobs=await response.json()
 
 //   const jobs = [
@@ -27,15 +27,16 @@ const jobs=await response.json()
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Job Listings</h1>
-      <div className="grid gap-4">
-        {jobs.map((job, index) => (
-            <Link key={index} href={`/v2024/Jobs/${job.id}`}>
+    <h1 className="text-2xl font-bold mb-4">Job Listings</h1>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {jobs.map((job:any, index:number) => (
+        <Link key={index} href={`/v2024/Jobs/${job.id}`}>
           <JobCard key={index} job={job} />
-          </Link>
-        ))}
-      </div>
+        </Link>
+      ))}
     </div>
+  </div>
+  
   );
 };
 

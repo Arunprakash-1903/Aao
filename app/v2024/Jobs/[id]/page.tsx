@@ -37,10 +37,10 @@ const JobCard =async ({
         return daysAgo;
       }
   const iD=(await params)?.id as number
-  const response=await fetch(`http://mwv.hlu.mybluehostin.me/api/jobs/get?id=${iD}`,{cache:"no-store"})
+  const response=await fetch(`${process.env.NEXTAUTH_URL}/api/jobs/get?id=${iD}`,{cache:"no-store"})
   const jobs=await response.json()
   const i=parseInt(iD+"")
-  const res= await fetch('http://mwv.hlu.mybluehostin.me/api/jobs/applicants', {
+  const res= await fetch(`${process.env.NEXTAUTH_URL}/api/jobs/applicants`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -57,88 +57,85 @@ const JobCard =async ({
   
   //sendEmail("arunprakash1141@gmail.com","file1.pdf","app\\(uploads)\\arunprakash2225@gmail.com\\Week3_Slides.pdf")
   return (
-    <div className="flex flex-col space-y-4 p-3">
-      
-    <div className="border rounded-lg p-6 bg-white shadow-md flex flex-col gap-4 ">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900">
-            {jobs.jobTitle}
-          </h3>
-    
+    <div className="flex flex-row space-x-4 p-3">
+    {/* Left Section: Job Listings */}
+    <div className="w-2/3">
+      <div className="border rounded-lg p-6 bg-white shadow-md flex flex-col gap-4">
+        {/* Header */}
+        <div className="flex items-start justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {jobs.jobTitle}
+            </h3>
+          </div>
         </div>
-      
+  
+        {/* Details */}
+        <div className="flex items-center gap-4 text-sm text-gray-500">
+          <div className="flex items-center gap-1">
+            <div>🕒</div>
+            <span>{jobs.Experience} years</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div>💰</div>
+            <span>{jobs.salary}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div>📍</div>
+            <span>{jobs.location}</span>
+          </div>
+        </div>
+  
+        {/* Footer */}
+        <div className="flex justify-between items-center border-t pt-4 text-sm text-gray-500">
+          <div>
+            <p>
+              Posted:{" "}
+              <span className="font-medium text-gray-900">
+                {calculateDaysAgo(jobs.createdAt)} days ago
+              </span>
+            </p>
+          </div>
+          <div>
+            <p>
+              Applicants:{" "}
+              <span className="font-medium text-gray-900">{applicants}</span>
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <ApplyButton jobId={iD} />
+          </div>
+        </div>
       </div>
-
-      {/* Details */}
-      <div className="flex items-center gap-4 text-sm text-gray-500">
-        <div className="flex items-center gap-1">
-        <div>🕒</div>
-          <span>{jobs.Experience} years</span>
-        </div>
-        <div className="flex items-center gap-1">
-         <div>💰</div>
-          <span>{jobs.salary}</span>
-        </div>
-        <div className="flex items-center gap-1">
-         <div>📍</div>
-          <span>{jobs.location}</span>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="flex justify-between items-center border-t pt-4 text-sm text-gray-500">
-        <div>
-          <p>Posted: <span className="font-medium text-gray-900">{calculateDaysAgo(jobs.createdAt)} days ago</span></p>
-         
-        </div>
-        <div>
-          <p>Applicants: <span className="font-medium text-gray-900">{applicants}</span></p>
-         
-        </div>
-        <div className="flex gap-2">
-       
-         <ApplyButton jobId={iD}/>
-
-        </div>
-</div>
-
-
-
-
-     
-
-    </div>
-    <div className="border-t pt-4 border rounded-lg p-8 bg-white shadow-md ">
-    <h4 className="text-md font-semibold text-gray-800 mb-2">Job Description</h4>
-    {/* <p className="text-sm text-gray-600">
-      The Service Desk Analyst will be responsible for handling customer inquiries
-      and providing technical support for a wide range of issues. Key
-      responsibilities include troubleshooting, documentation, and escalation as
-      needed. This role is ideal for freshers looking to kickstart their career in
-      IT support.
-    </p> */}
-    <div className="text-sm text-gray-600">
-    <PortableText value={data[0].jobd}/>
-    </div>
-  </div>
-
-  {/*About company */}
-  <div className="border-t pt-4 border rounded-lg p-8 bg-white shadow-md ">
-    <h4 className="text-md font-semibold text-gray-800 mb-2">About wipro</h4>
-    {/* <p className="text-sm text-gray-600">
-      The Service Desk Analyst will be responsible for handling customer inquiries
-      and providing technical support for a wide range of issues. Key
-      responsibilities include troubleshooting, documentation, and escalation as
-      needed. This role is ideal for freshers looking to kickstart their career in
-      IT support.
-    </p> */}
+  
+      {/* Job Description */}
+      <div className="border-t pt-4 border rounded-lg p-8 bg-white shadow-md">
+        <h4 className="text-md font-semibold text-gray-800 mb-2">
+          Job Description
+        </h4>
         <div className="text-sm text-gray-600">
-    <PortableText value={data[0].about}/>
+          <PortableText value={data[0].jobd} />
+        </div>
+      </div>
+  
+      {/* About Company */}
+      <div className="border-t pt-4 border rounded-lg p-8 bg-white shadow-md">
+        <h4 className="text-md font-semibold text-gray-800 mb-2">About Wipro</h4>
+        <div className="text-sm text-gray-600">
+          <PortableText value={data[0].about} />
+        </div>
+      </div>
+    </div>
+  
+    {/* Right Section: Empty Space */}
+    <div className="w-1/3 bg-gray-100 rounded-lg shadow-md p-6">
+      {/* Placeholder content */}
+      <div className="text-center text-gray-400">
+     
+      </div>
     </div>
   </div>
-  </div>
+  
     
   );
 };

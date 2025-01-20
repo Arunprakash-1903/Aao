@@ -1,8 +1,10 @@
+import { PortableText } from "next-sanity";
+import { getMainPageContent } from "../../../sanity/sanity.query";
 
 
 export default async function  Home() {
 
- 
+ const mainContent=await getMainPageContent('Courses')
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -18,13 +20,16 @@ export default async function  Home() {
           <div className="bg-white rounded-lg shadow p-6">
             
            
-            <div className="flex flex-col items-center justify-center mt-8">
-              <img
-                src="/4gwr6brwjhu01.png" // Replace with your mailbox image
-                alt="Mailbox"
-                className="w-70 h-70"
-              />
-              <p className="mt-4 text-gray-500">You have no tasks.</p>
+            <div className="flex flex-col items-center justify-center space-y-8 p-2">
+            <div className="p-2">
+            <iframe width="800" height="400"
+src={mainContent[0].video}>
+</iframe>
+</div>
+<div className="p-4">
+  <h3 className="ext-2xl font-bold mb-4">About</h3>
+  <PortableText value={mainContent[0].description}/>
+</div>
             </div>
           </div>
         </div>

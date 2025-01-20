@@ -1,6 +1,7 @@
 
 
-import { getFDP, getRecentFDP} from "../../../sanity/sanity.query";
+import { PortableText } from "next-sanity";
+import { getFDP, getMainPageContent, getRecentFDP} from "../../../sanity/sanity.query";
 import {FDP} from "../../../types";
 import Card from "app/components/Card";
 
@@ -10,6 +11,7 @@ import RecentPost from "app/components/RecentPost";
 export default async function  Home() {
   const workshops:FDP[] =await getFDP()
   const rfdp:FDP[] =await getRecentFDP()
+  const mainContent=await getMainPageContent("FDP")
  
   {workshops.map(workshop=>(console.log(workshop.description)))}
   return (
@@ -26,20 +28,28 @@ export default async function  Home() {
           <div className="flex justify-between items-center m-5">
           <h1 className="text-2xl font-semibold mb-4">Faculty Development Programme</h1>
           
-          <a className="w-full sm:w-auto py-3 px-6 bg-indigo-600 text-white text-lg font-semibold rounded-md shadow-md hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-              Register
-            </a>
+         
             </div>
           <div className="bg-white rounded-lg shadow p-6">
             
            
-            <div className="flex flex-col items-center justify-center mt-8">
-             
-              <h3 className="ext-2xl font-semibold mb-4">Conducted Faculty Development Programme</h3>
+            <div className="flex flex-col items-center justify-center space-y-8 p-2">
+              <div className="p-2">
+            <iframe width="800" height="400"
+src={mainContent[0].video}>
+</iframe>
+</div>
+<div className="p-4">
+  <h3 className="ext-2xl font-bold mb-4">About</h3>
+  <PortableText value={mainContent[0].description}/>
+</div>
+              <div className="flex flex-col items-center justify-center mt-4">
+              <h3 className="ext-2xl font-semibold ">Upcomming Faculty Development Programme</h3>
               <div className="grid grid-cols-1 lg:grid-cols-3 p-4 gap-4">
            
                {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
               
+              </div>
               </div>
             </div>
           </div>

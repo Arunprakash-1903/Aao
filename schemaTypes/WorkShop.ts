@@ -43,11 +43,6 @@ export default {
         title: 'Published at',
         type: 'datetime'
       },
-      {
-        name: 'author',
-        title: 'Author',
-        type: 'reference',
-        to: {type: 'author'}
-      },
+ 
     ]
   }
