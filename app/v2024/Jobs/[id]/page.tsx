@@ -4,8 +4,8 @@ import { PortableText } from "next-sanity";
 import ApplyButton from "app/components/ApplyButton";
 
 //import prisma from "prisma/prisma";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@lib/auth";
+// import { getServerSession } from "next-auth/next";
+// import { authOptions } from "@lib/auth";
 
 const JobCard =async ({
   params,
