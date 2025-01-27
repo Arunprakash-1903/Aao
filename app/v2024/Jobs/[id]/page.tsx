@@ -13,9 +13,9 @@ const JobCard =async ({
   params: Promise<{id: number }>
 }) => {
  const session=await getServerSession(authOptions)
-  const existingUser = await prisma.user.findUnique({ where: { email:session.user.email} });
+  // const existingUser = await prisma.user.findUnique({ where: { email:session.user.email} });
 
-  console.log(existingUser.profileDocument);
+  // console.log(existingUser.profileDocument);
   function calculateDaysAgo(dateString: string): number {
         const date=dateString.replace("T"," ")
       //  console.log("-------"+date);

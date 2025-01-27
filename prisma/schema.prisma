@@ -21,6 +21,7 @@ model User {
   profileDocument  String?
   contactNumber    String?
   intro            String?
+  subcribed        Boolean @default(false)
   profileDesignation String?
   role             UserRole   @default(USER)
   purchasedCourses Purchase[] // Many-to-many relationship via the Purchase model

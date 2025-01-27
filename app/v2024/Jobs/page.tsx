@@ -28,14 +28,25 @@ const jobs=await response.json()
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
     <h1 className="text-2xl font-bold mb-4">Job Listings</h1>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {jobs.map((job:any, index:number) => (
-        <Link key={index} href={`/v2024/Jobs/${job.id}`}>
-          <JobCard key={index} job={job} />
-        </Link>
-      ))}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Left column for job listings */}
+      <div className="col-span-1">
+        <div className="grid grid-cols-1  gap-6">
+          {jobs.map((job: any, index: number) => (
+            <Link key={index} href={`/v2024/Jobs/${job.id}`}>
+              <JobCard key={index} job={job} />
+            </Link>
+          ))}
+        </div>
+      </div>
+  
+      {/* Right column (empty) */}
+      <div className="col-span-1 bg-gray-100 rounded-lg shadow-md p-6">
+        {/* <p className="text-gray-500 text-center">No content here yet</p> */}
+      </div>
     </div>
   </div>
+  
   
   );
 };
