@@ -3,7 +3,7 @@ import { getJobById } from "../../../../sanity/sanity.query";
 import { PortableText } from "next-sanity";
 import ApplyButton from "app/components/ApplyButton";
 
-import prisma from "prisma/prisma";
+//import prisma from "prisma/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@lib/auth";
 
@@ -12,7 +12,7 @@ const JobCard =async ({
 }: {
   params: Promise<{id: number }>
 }) => {
- const session=await getServerSession(authOptions)
+ //const session=await getServerSession(authOptions)
   // const existingUser = await prisma.user.findUnique({ where: { email:session.user.email} });
 
   // console.log(existingUser.profileDocument);
