@@ -21,6 +21,19 @@ export async function getPost() {
     }`
   );
 }
+export async function getModules(){
+  return client.fetch(
+    groq`*[_type=='modules']{
+    id,
+    title,
+    "slug":slug.current,
+    description,
+    "image":mainImage.asset->url,
+    _type
+    }
+    `
+    )
+}
 export async function getJobById(id:number){
 return client.fetch(
 groq`*[_type=='jobs' && id==$id]{

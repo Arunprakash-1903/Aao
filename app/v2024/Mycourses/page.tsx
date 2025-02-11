@@ -95,7 +95,7 @@ const Page = () => {
                       {/* Course Image */}
                       <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
                         <img
-                          src={course.image || '/default-course.png'}
+                          src={course?.image || '/default-course.png'}
                           alt={course?.title}
                           className="w-full h-full object-cover"
                         />
@@ -106,7 +106,7 @@ const Page = () => {
                         <div className='flex items-center justify-between space-x-6'>
                         <h2 className="text-xl font-bold text-gray-800">{course?.title}</h2>
                         <button onClick={()=>{
-                      window.location.href=`/v2024/Mycourses/${course.slug}`
+                      window.location.href='/v2024/Mycourses/modules'
                         }} className="w-full sm:w-auto py-3 px-6 bg-indigo-600 text-white text-lg font-semibold rounded-md shadow-md hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               Learn
             </button>

@@ -1,56 +1,67 @@
-import Link from 'next/link'
-import React from 'react'
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Dropdown from './dropdown';
+
 const Header = () => {
-    const { data: session} = useSession();
-  return (
-    <header className="bg-white shadow top-0 sticky z-10">
-    <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-      <Link href="/v2024">
-      <div className="flex items-center justify-center space-x-4">
-    <img
-          src="/logo.jpeg" // Replace with your logo image
-          alt="Barry Wehmiller"
-          className="w-10 h-10 object-contain"
-        />
-      <div className="text-xl font-bold">Aao</div>
-      </div>
-      </Link>
-        {/* <div className=" flex space-x-28  text-xs text-gray-600 font-bold w-[100%]">
-          <div>1</div>
-          <div>2</div>
-          <div className="ml-3">SignIn</div>
-        </div> */}
-        <div className="flex flex-col  space-y-3">
-          <div className="300 w-[400px]">
-        
-       {/* {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>:<div className="flex justify-end items-center text-xs"><div className=" text-gray-400 font-normal cursor-pointer" onClick={handleOut}>{session.user?.email}</div></div>} */}
-       <div className="flex justify-end items-center text-xs"> 
+    const { data: session } = useSession();
+    const [designation, setDesignation] = useState<string | null>(null);
 
-       {!session?<Link href="/Login" className="flex justify-end items-center text-xs"><div >SignIn</div></Link>: <Dropdown  text={session.user?.email}/>}
-        </div>
+    useEffect(() => {
+        const fetchDesignation = async () => {
+            if (!session?.user?.email) return;
+            try {
+                const response = await fetch('/api/getDes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: "arunprakash2225@gmail.com" }),
+                });
+                const data = await response.json();
+                setDesignation(data.jd); // Assuming API returns `{ jd: "faculty" }`
+            } catch (error) {
+                console.error('Error fetching designation:', error);
+            }
+        };
 
-        </div>
-      <div className="flex space-x-4 items-center text-xs text-black font-bold ">
-      <a href="/v2024/NataCourse" className="">NATA course</a>
-        <a href="/v2024/Courses" className="">Courses</a>
-        <a href="/v2024/workshop" className="">WorkShops</a>
-        <a href="/v2024/Jobs" className="">Jobs</a>
-        <a href="/v2024/fdp" className="">FDP</a>
+        fetchDesignation();
+    }, [session]);
+console.log(designation);
 
-        
-        <a href="/v2024/Jobs" className="">Surveys</a>
-      
-      
-        {/* <div className="text-gray-600">icons.bdc@gmail.com</div> */}
-        </div>
-        </div>
-      
-    </div>
-  </header>
-  
-  )
-}
+    return (
+        <header className="bg-white shadow top-0 sticky z-10">
+            <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+                <Link href="/v2024">
+                    <div className="flex items-center justify-center space-x-4">
+                        <img src="/logo.jpeg" alt="Barry Wehmiller" className="w-10 h-10 object-contain" />
+                        <div className="text-xl font-bold">Aao</div>
+                    </div>
+                </Link>
 
-export default Header
+                <div className="flex flex-col space-y-3">
+                    <div className="300 w-[400px]">
+                        <div className="flex justify-end items-center text-xs">
+                            {!session ? (
+                                <Link href="/Login" className="flex justify-end items-center text-xs">
+                                    <div>SignIn</div>
+                                </Link>
+                            ) : (
+                                <Dropdown text={session.user?.email} />
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="flex space-x-4 items-center text-xs text-black font-bold">
+                        <a href="/v2024/NataCourse">NATA course</a>
+                        <a href="/v2024/Courses">Courses</a>
+                        <a href="/v2024/workshop">WorkShops</a>
+                        <a href="/v2024/Jobs">Jobs</a>
+                        {designation === 'Faculty' && <a href="/v2024/fdp">FDP</a>}
+                        <a href="/v2024/Jobs">Surveys</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+    );
+};
+
+export default Header;

@@ -12,6 +12,10 @@ enum UserRole {
   ADMIN
   USER
 }
+// model NATACourses{
+//   id Int @id @default(autoincrement())
+//   modules Course[]
+// }
 model User {
   id               Int        @id @default(autoincrement())
   email            String     @unique
@@ -26,29 +30,59 @@ model User {
   role             UserRole   @default(USER)
   purchasedCourses Purchase[] // Many-to-many relationship via the Purchase model
   appiledJobs      Applyed[]
+  
+
+  workshopapplyed workshopapplyed[]
+}
+model Workshop{
+  id               Int        @id @unique
+  slug             String
+   
+
+
+
+  workshopapplyed workshopapplyed[]
 }
 
+model workshopapplyed{
+   id               Int        @id @default(autoincrement())
+   userId           Int
+   workshopId       Int
+    user       User    @relation(fields: [userId], references: [id])
+    workshop        Workshop     @relation(fields: [workshopId], references: [id])
+
+  @@unique([userId, workshopId]) // Ensure a user cannot purchase the same course twice
+
+
+}
 model Course {
   id          Int           @id @default(autoincrement())
   title       String
   description String?
   createdAt   DateTime      @default(now())
   purchases   Purchase[]    // Many-to-many relationship via the Purchase model
-  attachments Attachment[]  // One-to-many relationship with Attachment
+  modules Module[]  // One-to-many relationship with Attachment
 }
 
-model Attachment {
+model Module {
   id         Int      @id @default(autoincrement())
   title      String
-  url        String
-  completed  Boolean @default(false)
+  
+  
   courseId   Int
-
+  attachments Attachments[]
   course     Course   @relation(fields: [courseId], references: [id])
 
   @@index([courseId]) // Optional for faster lookups by courseId
 }
+model Attachments{
+  id Int  @id @default(autoincrement())
+  title String
+  url   String
+  moduleId Int
+  modules Module @relation(fields: [moduleId], references: [id])
 
+}
 model Purchase {
   id         Int     @id @default(autoincrement())
   userId     Int
@@ -78,6 +112,11 @@ model Job {
   updatedAt      DateTime @updatedAt
   apilicants     Applyed[]
 }
+// model WorkshopApplyed{
+//   id Int @id @default(autoincrement())
+//   userId Int
+
+// }
 model Applyed{
   id Int         @id @default(autoincrement())
   userId Int

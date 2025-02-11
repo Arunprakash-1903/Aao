@@ -1,17 +1,23 @@
 import { authOptions } from "@lib/auth";
-import CourseCard from "app/components/CourseCard";
+
 
 import { getServerSession } from "next-auth";
-import { getMainPageContent, getNataCourses } from "../../../sanity/sanity.query";
+import { getCourseBySlug, getMainPageContent, getNataCourses } from "../../../sanity/sanity.query";
 import { PortableText } from "next-sanity";
+import prisma from "prisma/prisma";
 
 //import { getNataCourses } from "sanity/sanity.query";
 
 export default async function  Home() {
+  
   const session=await getServerSession(authOptions)
+
+      const user=await prisma.user.findUnique({where: { email:session?.user?.email ||"" },});
+console.log("----------------> "+user);
+
   const  courses=await getNataCourses()
   const mainContent=await getMainPageContent("NataCourse")
-  console.log("-------------"+mainContent);
+  
   
   async function fetchUserWithCourses(email: string) {
     try {
@@ -74,7 +80,15 @@ list.forEach((l)=>{
         {/* Left Section */}
         <div className="md:col-span-2">
           {/* Welcome Section */}
+          <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold mb-4">Nata Courses</h1>
+
+          {(session && user!=null) ? !user.subcribed? <div className="mr-10 flex items-center gap-2 bg-purple-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-purple-700 transition duration-300">
+    <a href={`https://buy.stripe.com/test_14k14Z21k1q6au4144?prefilled_email=${session?.user.email}`} target="_blank">
+    Subscribe
+    </a>
+  </div>:<button>subcribed</button>:<div>signIn to get Access</div>}
+  </div>
           <div className="bg-white rounded-lg shadow p-6">
             
           <div className="p-2">
@@ -83,11 +97,18 @@ src={mainContent[0].video}>
 </iframe>
 </div>
 <div className="p-4 m-3">
+ 
   <h3 className="ext-2xl font-bold mb-4">About</h3>
+
+
+
+ 
+
+
   <PortableText value={mainContent[0].description}/>
 </div>
 <div className="flex flex-col space-y-2 p-5">
-  <h3 className="ext-2xl font-bold ml-1">Modules</h3>
+  {/* <h3 className="ext-2xl font-bold ml-1">Modules</h3>
  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-5">
           
            {courses.map((course: any,index:any)=>(
@@ -97,7 +118,7 @@ src={mainContent[0].video}>
     
           
            
-            </div>
+            </div> */}
             </div>
           </div>
         </div>

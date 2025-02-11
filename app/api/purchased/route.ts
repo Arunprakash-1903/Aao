@@ -21,7 +21,15 @@ export  async function POST(req:Request) {
       include: {
         purchasedCourses: {
           include: {
-            course: true,
+            course: {
+              include:{
+                modules:{
+                  include:{
+                    attachments:true
+                  }
+                }
+              }
+            }
            
           
           },
@@ -30,7 +38,8 @@ export  async function POST(req:Request) {
           include:{
           job:true
           }
-        }
+        },
+
       },
     });
 

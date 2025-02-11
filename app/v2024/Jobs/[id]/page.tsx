@@ -3,17 +3,17 @@ import { getJobById } from "../../../../sanity/sanity.query";
 import { PortableText } from "next-sanity";
 import ApplyButton from "app/components/ApplyButton";
 
-//import prisma from "prisma/prisma";
-// import { getServerSession } from "next-auth/next";
-// import { authOptions } from "@lib/auth";
+import prisma from "prisma/prisma";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@lib/auth";
 
 const JobCard =async ({
   params,
 }: {
   params: Promise<{id: number }>
 }) => {
- //const session=await getServerSession(authOptions)
-  // const existingUser = await prisma.user.findUnique({ where: { email:session.user.email} });
+ const session=await getServerSession(authOptions)
+const existingUser = await prisma.user.findUnique({ where: { email:session?.user?.email} });
 
   // console.log(existingUser.profileDocument);
   function calculateDaysAgo(dateString: string): number {
@@ -103,7 +103,15 @@ const JobCard =async ({
             </p>
           </div>
           <div className="flex gap-2">
+          {existingUser.subcribed ?
             <ApplyButton jobId={iD} />
+            
+            :<div className="mr-10 flex items-center gap-2 bg-purple-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-purple-700 transition duration-300">
+            <a href={`https://buy.stripe.com/test_14k14Z21k1q6au4144?prefilled_email=${session?.user.email}`} target="_blank">
+            Subscribe
+            </a>
+          </div>
+            }
           </div>
         </div>
       </div>

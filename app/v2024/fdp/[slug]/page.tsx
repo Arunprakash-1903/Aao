@@ -6,6 +6,10 @@ import Image from 'next/image';
 
 import { FDP } from 'types';
 import RecentPost from 'app/components/RecentPost';
+import RegisterButton from 'app/components/RegisterButton';
+import { authOptions } from '@lib/auth';
+import { getServerSession } from 'next-auth';
+import prisma from 'prisma/prisma';
 
 
 const BlogPage = async ({
@@ -18,7 +22,9 @@ const BlogPage = async ({
   const cfdp = await getFDPBySlug((await params)?.slug);
   const rfdp: FDP[] = await getRecentFDP(); // Recent FDP
  
-
+  const session=await getServerSession(authOptions)
+  const user=await prisma.user.findUnique({where: { email:session?.user?.email ||"" },});
+  
   return (
     <>
      
@@ -39,9 +45,14 @@ const BlogPage = async ({
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <div className='flex justify-between mb-4'>
               <h1 className="text-3xl font-bold text-gray-800 mb-4">{cfdp.title}</h1>
-              <a className="w-full sm:w-auto py-3 px-6 bg-indigo-600 text-white text-lg font-semibold rounded-md shadow-md hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-              Register
-            </a>
+              {(session && user!=null) ? !user.subcribed? <div className="mr-10 flex items-center gap-2 bg-purple-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-purple-700 transition duration-300">
+    <a href={`https://buy.stripe.com/test_14k14Z21k1q6au4144?prefilled_email=${session?.user.email}`} target="_blank">
+    Subscribe
+    </a>
+  </div>:<div className='mr-10 flex items-center gap-2 bg-blue-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-blue-700 transition duration-300' >
+
+ <RegisterButton/>
+  </div>:<div>signIn to Register</div>}
               </div>
               <article className="prose prose-lg max-w-none text-gray-700">
                 <PortableText value={cfdp.body} />

@@ -7,5 +7,6 @@ import workShop from './WorkShop'
 import courses from './course'
 import jobs from './jobs'
 import mainPage from './mainPage'
+import modules from './NATAmodules'
 
-export const schemaTypes = [category,post,blockContent,workShop,fdp,courses,jobs,mainPage]
+export const schemaTypes = [category,post,blockContent,workShop,fdp,courses,jobs,mainPage,modules]
