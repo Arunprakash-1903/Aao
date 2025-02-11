@@ -56,7 +56,7 @@ const Page = () => {
 
 
 
-let i=[];
+const i=[];
 courseDataV?.forEach((mod:any)=>{
 if(mod.title==slug)
     i.push(mod)

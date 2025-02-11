@@ -1,6 +1,6 @@
 import { PortableText } from 'next-sanity'
 import React from 'react'
-import { getAuthorById, getWorkShopBySlug} from '../../../../sanity/sanity.query'
+import {  getWorkShopBySlug} from '../../../../sanity/sanity.query'
 
 import Image from "next/image"
 import { getServerSession } from 'next-auth'

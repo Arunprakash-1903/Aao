@@ -2,7 +2,7 @@ import { authOptions } from "@lib/auth";
 
 
 import { getServerSession } from "next-auth";
-import { getCourseBySlug, getMainPageContent, getNataCourses } from "../../../sanity/sanity.query";
+import {  getMainPageContent, getNataCourses } from "../../../sanity/sanity.query";
 import { PortableText } from "next-sanity";
 import prisma from "prisma/prisma";
 
@@ -60,15 +60,15 @@ list.push(c.course.id)
   }
   console.log(list);
 
-  const check=(list:number[],id:string)=>{
-    let flag=false
-list.forEach((l)=>{
-  if(l==parseInt(id)){
-    flag=true
-  }
-})
-    return flag
-  }
+//   const check=(list:number[],id:string)=>{
+//     let flag=false
+// list.forEach((l)=>{
+//   if(l==parseInt(id)){
+//     flag=true
+//   }
+// })
+//     return flag
+//   }
   
   
   return (

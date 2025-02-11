@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
+
 import Stripe from 'stripe';
 import prisma from 'prisma/prisma';
 import { getCourseBySlug } from '../../../../sanity/sanity.query'
@@ -47,7 +47,7 @@ export async function POST(req:Request) {
                 );
                 const customerId:any = sessionstripe?.customer;
                 const customer:any = await stripe.customers.retrieve(customerId);
-                const priceId = sessionstripe?.line_items?.data[0]?.price.id;
+               // const priceId = sessionstripe?.line_items?.data[0]?.price.id;
                 
                 //console.log(customerId,customer,priceId)
                 
@@ -135,7 +135,7 @@ export async function POST(req:Request) {
             const customerId:any = sessionstripe?.customer;
             const customer:any = await stripe.customers.retrieve(customerId);
            
-            const user = await prisma.user.update({
+            await prisma.user.update({
                 where: {
                   email: customer.email,
                 },
