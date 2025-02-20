@@ -33,7 +33,7 @@ console.log(designation);
                 <Link href="/v2024">
                     <div className="flex items-center justify-center space-x-4">
                         <img src="/logo.jpeg" alt="Barry Wehmiller" className="w-10 h-10 object-contain" />
-                        <div className="text-xl font-bold">Aao</div>
+                        <div className="text-xl font-bold">architecture-academics.online</div>
                     </div>
                 </Link>
 
