@@ -1,19 +1,31 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { SessionProvider, useSession } from "next-auth/react";
-const RegisterButton = () => {
-    const [registered,setRegisted]=useState(false)
+const RegisterButton = ({userId,workshopId,state}:{userId:any,workshopId:any,state:boolean}) => {
+   
 
     const { data: session} = useSession();
-    useEffect(()=>{
-setRegisted(false)
-
-
-    },[])
+   
+ 
     const handleRegister=async()=>{
      
-        
+      const response = await fetch('/api/purchased', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email :session.user.email}),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Something went wrong');
+      }
+  
+      const data = await response.json();
+      console.log("from workshop apply",data);
+      
    
         await fetch(`/api/sendEmail`, {
          method: 'POST',
@@ -25,13 +37,19 @@ setRegisted(false)
              
          }),
        }); 
+       fetch("/api/workshop", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: userId, workshopId}),
+   })
        alert("Registered successfully")  
-       setRegisted(true)
-    }
+      }
   return (
 
     <SessionProvider> 
-   {!registered? <button className='px-2' onClick={handleRegister}  >
+   {!state? <button className='px-2' onClick={handleRegister}  >
     Register
     </button>:<button >Registered</button>}
     </SessionProvider>

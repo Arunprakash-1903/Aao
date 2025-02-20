@@ -142,7 +142,7 @@ export async function getAuthorById(id:string) {
 export async function getWorkShopBySlug(slug:string) {
   return client.fetch(
     groq`*[_type == 'workshop' && slug.current == $slug][0]{
-      _id,
+      id,
       title,
       "slug": slug.current,
       publishedAt,

@@ -39,7 +39,11 @@ export  async function POST(req:Request) {
           job:true
           }
         },
-
+      workshopapplyed:{
+        include:{
+          workshop:true
+        }
+      }
       },
     });
 

@@ -1,16 +1,21 @@
 import nodemailer from 'nodemailer'
 const  transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'mail.architecture-academics.online',
+  port: 465, // Try 587 instead of 465
+  secure: true, // Use false for TLS
   auth: {
-    user: 'arunprakash2225@gmail.com',
-    pass: 'pxpz psuh kfku umob'
+    user: 'admin@architecture-academics.online',
+    pass: 'wt_,Wd+q,X1&'
+  },
+  tls:{
+    rejectUnauthorized:false
   }
 });
 
 
 export const sendEmail=(tomail:string,file:string,path:string)=>{
     const mailOptions = {
-        from: 'arunprakash225@gmail.com',
+        from: 'admin@architecture-academics.online',
         to: tomail,
         subject: 'Sending Email using Node.js',
         html: '<h1>That was easy!</h1>',

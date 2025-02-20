@@ -9,14 +9,37 @@ import prisma from 'prisma/prisma'
 import RegisterButton from '../../../components/RegisterButton'
 
 
+
 const BlogPage = async({params}) => {
  
   const cpost=await getWorkShopBySlug(params?.slug)
-
+const workshopId:any=cpost.id
 
  const session=await getServerSession(authOptions)
 
-      const user=await prisma.user.findUnique({where: { email:session?.user?.email ||"" },});
+    const user=await prisma.user.findUnique({where: { email:session?.user?.email?session?.user?.email:"" },});
+   
+      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/purchased`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email:session?.user?.email }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log('User Data:', data.workshopapplyed);
+      } else {
+        console.log(data.message);
+        
+      }
+  const list:number[]=[]
+ {session!=null && data.workshopapplyed.map((ws:any)=>{
+list.push(ws.workshopId)
+  })}
+  console.log(list.includes(parseInt(workshopId) ));
   
   return (
  
@@ -38,7 +61,7 @@ const BlogPage = async({params}) => {
     </a>
   </div>:<div className='mr-10 flex items-center gap-2 bg-blue-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-blue-700 transition duration-300' >
 
- <RegisterButton/>
+ <RegisterButton userId={user.id} workshopId={parseInt(workshopId) } state={list.includes(parseInt(workshopId) )}/>
   </div>:<div>signIn to Register</div>}
   </div>
   </div>

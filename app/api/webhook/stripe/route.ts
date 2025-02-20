@@ -36,8 +36,7 @@ export async function POST(req:Request) {
 
         switch (eventType) {
             case 'checkout.session.completed': {
-                // First payment is successful and a subscription is created (if mode was set to "subscription" in ButtonCheckout)
-             //   ✅ Grant access to the product
+     
              try {
                 const sessionstripe = await stripe.checkout.sessions.retrieve(
                     data.object.id,
@@ -47,34 +46,15 @@ export async function POST(req:Request) {
                 );
                 const customerId:any = sessionstripe?.customer;
                 const customer:any = await stripe.customers.retrieve(customerId);
-               // const priceId = sessionstripe?.line_items?.data[0]?.price.id;
-                
-                //console.log(customerId,customer,priceId)
-                
-                // if (customer.email) {
-                //     user = await User.findOne({ email: customer.email });
+                const user = await prisma.user.findUnique({
+                  where: {
+                    email:customer.email,
+                  },
+                 
+                })
+            
 
-                //     if (!user) {
-                //         user = await User.create({
-                //             email: customer.email,
-                //             name: customer.name,
-                //             customerId
-                //         });
-
-                //         await user.save();
-                //     }
-                // } else {
-                //     console.error('No user found');
-                //     throw new Error('No user found');
-                // }
-
-                // // Update user data + Grant user access to your product. It's a boolean in the database, but could be a number of credits, etc...
-                // user.priceId = priceId;
-                // user.hasAccess = true;
-                // await user.save();
-
-                // Extra: >>>>> send email to dashboard <<<<
-                const user = await prisma.user.update({
+                await prisma.user.update({
                     where: {
                       email:customer.email,
                     },
@@ -107,64 +87,12 @@ export async function POST(req:Request) {
                         throw new Error(errorData.error || 'Failed to purchase course.');
                       }
                 
-                      
+               
                     } catch (error: any) {
                       console.log(error.message);
                     } 
               
                 break;
-            }
-
-            case 'customer.subscription.deleted': {
-            //     // ❌ Revoke access to the product
-            //     // The customer might have changed the plan (higher or lower plan, cancel soon etc...)
-            //     const subscription = await stripe.subscriptions.retrieve(
-            //         data.object.id
-            //     );
-            //     const user = await User.findOne({
-            //         customerId: subscription.customer
-            //     });
-
-            //     // Revoke access to your product
-            const sessionstripe = await stripe.checkout.sessions.retrieve(
-                data.object.id,
-                {
-                    expand: ['line_items']
-                }
-            );
-            const customerId:any = sessionstripe?.customer;
-            const customer:any = await stripe.customers.retrieve(customerId);
-           
-            await prisma.user.update({
-                where: {
-                  email: customer.email,
-                },
-                data: {
-                  subcribed:false,
-                },
-              })
-
-
-              const response = await fetch(`${process.env.NEXTAUTH_URL}/api/unpurchase`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  // userId:3,
-                  // courseId: 1,
-                  email:session.user.email,
-                  id:c.id
-                }),
-              });
-        
-              if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to purchase course.');
-              }
-            //     await user.save();
-
-              break;
             }
 
             default:

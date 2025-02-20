@@ -31,6 +31,7 @@ model User {
   purchasedCourses Purchase[] // Many-to-many relationship via the Purchase model
   appiledJobs      Applyed[]
   
+  
 
   workshopapplyed workshopapplyed[]
 }
