@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import { FDP } from 'types';
 import RecentPost from 'app/components/RecentPost';
-import RegisterButton from 'app/components/RegisterButton';
+//import RegisterButton from 'app/components/RegisterButton';
 import { authOptions } from '@lib/auth';
 import { getServerSession } from 'next-auth';
 import prisma from 'prisma/prisma';
@@ -51,7 +51,8 @@ const BlogPage = async ({
     </a>
   </div>:<div className='mr-10 flex items-center gap-2 bg-blue-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-blue-700 transition duration-300' >
 
- <RegisterButton/>
+ {/* <RegisterButton/> */}
+ <button>Register</button>
   </div>:<div>signIn to Register</div>}
               </div>
               <article className="prose prose-lg max-w-none text-gray-700">

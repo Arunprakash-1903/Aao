@@ -36,7 +36,7 @@ const workshopId:any=cpost.id
         
       }
   const list:number[]=[]
- {session!=null && data.workshopapplyed.map((ws:any)=>{
+ {if(session && user!=null)  data.workshopapplyed.map((ws:any)=>{
 list.push(ws.workshopId)
   })}
   console.log(list.includes(parseInt(workshopId) ));

@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 
 import Stripe from 'stripe';
 import prisma from 'prisma/prisma';
-import { getCourseBySlug } from '../../../../sanity/sanity.query'
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@lib/auth';
+// import { getCourseBySlug } from '../../../../sanity/sanity.query'
+// import { getServerSession } from 'next-auth';
+// import { authOptions } from '@lib/auth';
 
 
 
@@ -13,7 +13,7 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(req:Request) {
   
-    const session=await getServerSession(authOptions)
+   // const session=await getServerSession(authOptions)
     const body = await req.text();
 
     const signature =  req.headers.get('stripe-signature')
@@ -29,7 +29,7 @@ export async function POST(req:Request) {
         console.error(`Webhook signature verification failed. ${err.message}`);
         return NextResponse.json({ error: err.message }, { status: 400 });
     }
-    const c=await getCourseBySlug("nata-course")
+   // const c=await getCourseBySlug("nata-course")
     data = event.data;
     eventType = event.type;
 
