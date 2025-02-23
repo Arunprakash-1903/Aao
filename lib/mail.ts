@@ -1,15 +1,13 @@
 import nodemailer from 'nodemailer'
-const  transporter = nodemailer.createTransport({
-  host: 'mail.architecture-academics.online',
-  port: 465, // Try 587 instead of 465
-  secure: true, // Use false for TLS
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST, // Use env variables
+  port: Number(process.env.SMTP_PORT),
+  secure: process.env.SMTP_SECURE === "true", 
   auth: {
-    user: 'admin@architecture-academics.online',
-    pass: 'wt_,Wd+q,X1&'
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
-  tls:{
-    rejectUnauthorized:false
-  }
+
 });
 
 
