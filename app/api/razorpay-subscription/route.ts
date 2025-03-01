@@ -3,7 +3,7 @@ import Razorpay from "razorpay";
 
 export async function POST(req: Request) {
   try {
-    const { email, planId } = await req.json();
+    const {planId } = await req.json();
     console.log("planId "+planId);
     
 
@@ -20,6 +20,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(subscription);
   } catch (error) {
-    return NextResponse.json({ error: "Error creating subscription" }, { status: 500 });
+    return NextResponse.json({ error: "Error creating subscription"+error }, { status: 500 });
   }
 }
