@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import {  getMainPageContent, getNataCourses } from "../../../sanity/sanity.query";
 import { PortableText } from "next-sanity";
 import prisma from "prisma/prisma";
+import SubscriptionButton from "app/components/subcribeButton";
 
 //import { getNataCourses } from "sanity/sanity.query";
 
@@ -83,10 +84,11 @@ list.push(c.course.id)
           <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold mb-4">Nata Courses</h1>
 
-          {(session && user!=null) ? !user.subcribed? <div className="mr-10 flex items-center gap-2 bg-purple-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-purple-700 transition duration-300">
-    <a href={`https://buy.stripe.com/test_14k14Z21k1q6au4144?prefilled_email=${session?.user.email}`} target="_blank">
+          {(session && user!=null) ? !user.subcribed? <div >{/* className="mr-10 flex items-center gap-2 bg-purple-600 text-white font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-purple-700 transition duration-300"*/}
+    {/* <a href={`https://rzp.io/rzp/yBEG9LC`} target="_blank">
     Subscribe
-    </a>
+    </a> */}
+    <SubscriptionButton/>
   </div>:<button>subcribed</button>:<div>signIn to get Access</div>}
   </div>
           <div className="bg-white rounded-lg shadow p-6">

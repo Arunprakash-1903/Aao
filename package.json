@@ -43,6 +43,7 @@
     "next-auth": "^4.24.10",
     "next-sanity": "^9.8.7",
     "nodemailer": "^6.9.16",
+    "razorpay": "^2.9.6",
     "react": "^18",
     "react-confetti": "^6.2.2",
     "react-dom": "^18",
