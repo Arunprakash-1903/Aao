@@ -1,3 +1,6 @@
+
+import { authOptions } from "@lib/auth";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import prisma from "prisma/prisma";
 
@@ -8,7 +11,7 @@ export async function POST(req: Request) {
   if (body.event === "subscription.activated") {
     const customerId = body.payload.subscription.entity.customer_id;
     console.log("Customer ID:", customerId);
-
+const session=getServerSession(authOptions)
     if (!customerId) {
       return NextResponse.json({ error: "Customer ID not found" }, { status: 400 });
     }
@@ -26,8 +29,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Failed to fetch customer details" }, { status: 400 });
     }
 
-    const customerData = await customerResponse.json();
-    const subscriberEmail = customerData.email;
+    //const customerData = await customerResponse.json();
+    const subscriberEmail = (await session).user.email
 
     console.log("Subscriber Email:", subscriberEmail);
 
