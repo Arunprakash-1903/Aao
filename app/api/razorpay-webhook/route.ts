@@ -36,7 +36,7 @@ console.log(session);
           
           
           
-          const response = await fetch(`${process.env.NEXTAUTH_URL}/api/purchase`, {
+          await fetch(`${process.env.NEXTAUTH_URL}/api/purchase`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
