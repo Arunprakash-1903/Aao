@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
       //const user=await prisma.user.findUnique({where: { email:session?.user?.email ||"" },});
   if (body.event === "subscription.activated") {
-    console.log("Subscription activated for:", body.payload.subscription.entity.customer_id);
+    console.log("Subscription activated for:", body.payload.subscription.entity);
 console.log(session);
 
 
