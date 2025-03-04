@@ -56,7 +56,7 @@ import { authOptions } from "@lib/auth";
 
 
 import { getServerSession } from "next-auth";
-import {  getMainPageContent, getNataCourses } from "../../../sanity/sanity.query";
+import {  getMainPageContent } from "../../../sanity/sanity.query";
 import { PortableText } from "next-sanity";
 import prisma from "prisma/prisma";
 import Link from "next/link";
@@ -77,32 +77,32 @@ console.log("----------------> "+user);
   const mainContent=await getMainPageContent("Jobs")
   
   
-  async function fetchUserWithCourses(email: string) {
-    try {
-      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/purchased`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
+  // async function fetchUserWithCourses(email: string) {
+  //   try {
+  //     const response = await fetch(`${process.env.NEXTAUTH_URL}/api/purchased`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ email }),
+  //     });
   
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Something went wrong');
-      }
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       throw new Error(errorData.message || 'Something went wrong');
+  //     }
   
-      const data = await response.json();
-    //  console.log('User with Purchased Courses:', data);
+  //     const data = await response.json();
+  //   //  console.log('User with Purchased Courses:', data);
      
-      return data;
-    }  catch (err) {
-     console.log(err);
+  //     return data;
+  //   }  catch (err) {
+  //    console.log(err);
      
-    } finally {
+  //   } finally {
    
-    }
-  }
+  //   }
+  // }
   
 //   const data=await fetchUserWithCourses(session?.user?.email)
 //   const pc=data?.purchasedCourses

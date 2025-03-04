@@ -1,5 +1,5 @@
 "use client";
-import Email from "next-auth/providers/email";
+
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
