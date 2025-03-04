@@ -1,10 +1,13 @@
 "use client";
+import Email from "next-auth/providers/email";
+import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
+
 
 export default function SubscriptionButton() {
   const [loading, setLoading] = useState(false);
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
-
+  const { data: session } = useSession();
   useEffect(() => {
     // Load Razorpay script dynamically
     const script = document.createElement("script");
@@ -38,9 +41,14 @@ export default function SubscriptionButton() {
         name: "Your Business",
         description: "Premium Subscription",
         theme: { color: "#3399cc" },
+        
         handler: (response: any) => {
           console.log("Payment successful:", response);
         },
+        prefill:{
+          name:session.user?.name,
+          email:session.user?.email
+        }
       };
 
       const rzp = new (window as any).Razorpay(options); // ✅ Now Razorpay will be available

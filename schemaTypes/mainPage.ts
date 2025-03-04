@@ -14,6 +14,7 @@ export default {
                   { title: 'WorkShop', value: 'WorkShop' },
                   { title: 'FDP', value: 'FDP' },
                   { title: 'Home', value: 'Home' },
+                  {title :'Jobs',value:'Jobs'}
                 ],
               },
           },
