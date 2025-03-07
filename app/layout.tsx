@@ -4,6 +4,7 @@ import "./globals.css"
 import Head from "next/head";
 import { SessionProvider } from 'next-auth/react';
 import Header from "./components/Header";
+import Footer from "./components/footer";
 
 
 //import NavBar from "./components/NavBar";
@@ -42,9 +43,10 @@ export default function RootLayout({
         <Header/>
         
         {children}
+        <Footer/>
         </SessionProvider>
       </body>
-      
+   
     </html>
   );
 }
