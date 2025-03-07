@@ -8,8 +8,8 @@ const Privacy = () => {
         <p className="text-sm text-gray-600 mt-2">Last Updated: March 05, 2025</p>
 
         <p className="text-gray-700 mt-4">
-            This Privacy Policy outlines how <strong>Architecture-Academics.online</strong> ("we", "us", or "our") collects, 
-            uses, and protects your personal information when you engage with our services ("Services").
+            This Privacy Policy outlines how <strong>Architecture-Academics.online</strong> (&quot;Company&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) collects, 
+            uses, and protects your personal information when you engage with our services (the &quot;Services&quot;) .
         </p>
 
         <h2 className="text-xl font-semibold text-gray-700 mt-6">1. Information We Collect</h2>

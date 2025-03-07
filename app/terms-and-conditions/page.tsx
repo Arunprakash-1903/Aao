@@ -11,11 +11,11 @@ export default function TermsAndConditions() {
 
         <h2 className="text-xl font-semibold text-gray-700 mt-6">Agreement to Our Legal Terms</h2>
         <p className="text-gray-700 mt-2">
-          We are <strong>Architecture Academics Online</strong> ("Company", "we", "us", or "our").
+          We are <strong>Architecture Academics Online</strong> (&quot;Company&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;).
           We operate the website{" "}
           <Link href="https://architecture-academics.online" className="text-blue-600 font-medium hover:underline">
             https://architecture-academics.online
-          </Link>, as well as other related products and services that refer to these Legal Terms (the "Services").
+          </Link>, as well as other related products and services that refer to these Legal Terms (the &quot;Services&quot;).
         </p>
 
         <p className="text-gray-700 mt-2">
