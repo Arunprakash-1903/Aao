@@ -16,7 +16,7 @@ export default async function  Home() {
            {/* Left Section */}
            <div className="md:col-span-2">
              {/* Welcome Section */}
-             <h1 className="text-2xl font-semibold mb-4">Courses</h1>
+             <h1 className="text-2xl font-semibold mb-4">Surveys</h1>
              <div className="bg-white rounded-lg shadow p-6">
                
               
