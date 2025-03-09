@@ -1,242 +1,229 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { Pencil } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
-type FormData = {
-
-  firstName: string;
-
-  profileDesignation: string;
-
-  email: string;
-  contactNumber: string;
-
-  intro: string;
-  profilePicture: File | null;
-  profileDocument: File | null;
-};
 
 const ProfilePage = () => {
-  const fileInput1 = useRef<HTMLInputElement>(null);
-  const fileInput2 = useRef<HTMLInputElement>(null);
-  const [formData, setFormData] = useState<FormData>({
-   
-    firstName: "",
- 
-    profileDesignation: "",
-   
+  const [user, setUser] = useState<any>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const docInputRef = useRef<HTMLInputElement>(null);
+  const [profileFile, setProfileFile] = useState<File | null>(null);
+  const [documentFile, setDocumentFile] = useState<File | null>(null);
+  const {data:session}=useSession()
+
+  // 🔥 Fetch user data
+  useEffect(() => {
     
-    email: "",
-    contactNumber: "",
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("/api/purchased", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email:session.user.email }), // Replace with dynamic email
+        });
 
-    intro: "",
-    profilePicture: null,
-    profileDocument: null,
-  });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message);
+        setUser(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    fetchUserData();
+  }, [session]);
 
+  // 🔥 Handle File Selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     if (files && files.length > 0) {
-      setFormData((prev) => ({ ...prev, [name]: files[0] }));
-      console.log(files);
- 
+      const file = files[0];
+
+      if (name === "profilePicture") {
+        setProfileFile(file);
+        setUser((prev: any) => ({ ...prev, previewUrl: URL.createObjectURL(file) }));
+      } else if (name === "profileDocument") {
+        setDocumentFile(file);
+      }
     }
   };
 
-  const handleSubmit =async (e: React.FormEvent) => {
-    e.preventDefault();
-    const form = new FormData();
-    form.append("profilePicture", fileInput1.current.files[0]!);
-    form.append("profileDocument", fileInput2.current.files[0]!);
-    form.append("email",formData.email)
-    form.append("contactNumber",formData.contactNumber)
-    form.append("firstName",formData.firstName)
-    form.append("intro",formData.intro)
-    form.append("profileDesignation",formData.profileDesignation)
-   /// form.append("")
+  // 🔥 Handle Input Change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setUser((prev: any) => ({ ...prev, [name]: value }));
+  };
 
-    // Add form submission logic here
-    const response =  await fetch("/api/upload", {
-      method: "POST",
-      body:form,
-    });
-   const data=await response.json();
-   if(data.status=="fail"){
-toast.error(data.error)
-   }else{
-    toast.success(data.status)
-   }
-    
+  // 🔥 Handle Form Submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!user) return;
+  
+    const formData = new FormData();
+    formData.append("email", user.email);
+    formData.append("firstName", user.name || "");
+    formData.append("contactNumber", user.contactNumber || "");
+    formData.append("profileDesignation", user.profileDesignation || "");
+  
+    if (profileFile) formData.append("profilePicture", profileFile);
+    if (documentFile) formData.append("profileDocument", documentFile);
+  
+    try {
+      const response = await fetch("/api/updateProfile", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        toast.success("Profile updated successfully!");
+        
+        // 🔥 Ensure profile picture is updated correctly
+        setUser((prev: any) => ({
+          ...prev,
+          profilePicture: result.profilePicture, // Ensure backend returns updated filename
+        }));
+  
+        setIsEditing(false);
+      } else {
+        toast.error(result.error || "Failed to update profile.");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error("An error occurred.");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 py-10 px-4">
-      <Toaster/>
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8 space-y-8"
-      >
-        <h2 className="text-2xl font-bold text-blue-700 mb-4">Profile</h2>
-
-        {/* Salutation */}
-
-        <div>
-          <label
-            htmlFor="profileDesignation"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Your Profile Designation
-          </label>
-          <select
-            id="profileDesignation"
-            required
-            name="profileDesignation"
-            value={formData.profileDesignation}
-            onChange={handleInputChange}
-            className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="">Select</option>
-            <option value="Student">Student</option>
-            <option value="Architect">Architect</option>
-            <option value="Institution">Institution</option>
-            <option value="Faculty">Faculty</option>
-            <option value="Architectural Firm">Architectural Firm</option>
-            <option value="Architectural affiliate service provider">
-              Architectural affiliate service provider
-            </option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-        {/* First Name */}
-        <div className="">
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-600">
-             Name
-          </label>
-          <input
-          
-            type="text"
-            id="firstName"
-            required
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-
-        {/* Sur Name */}
-      
-
-        {/* Profile Designation */}
-   
-
-      
-
-        {/* Email Address */}
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-600">
-            Email Address
-          </label>
-          <input
-            type="email"
-            required
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-
-        {/* Contact Number */}
-        <div>
-          <label
-            htmlFor="contactNumber"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Contact Number
-          </label>
-          <input
-            type="text"
-            required
-            id="contactNumber"
-            name="contactNumber"
-            value={formData.contactNumber}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-
-        {/* Promotions */}
-        
-
-        {/* Intro */}
-        <div>
-          <label htmlFor="intro" className="block font-medium text-gray-700">
-            Tell us an intro about yourself
-          </label>
-          <textarea
-            id="intro"
-            required
-            name="intro"
-            value={formData.intro}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-
-        {/* Profile Picture */}
-        <div>
-          <label htmlFor="profilePicture" className="block font-medium text-gray-700">
-            Upload your profile picture
-          </label>
-          <input
-            type="file"
-            id="profilePicture"
-            
-            ref={fileInput1}
-            name="profilePicture"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="mt-1 block w-full"
-          />
-        </div>
-
-        {/* Profile Document */}
-        <div>
-          <label htmlFor="profileDocument" className="block font-medium text-gray-700">
-            Upload your profile  
-          </label>
-          <input
-            type="file"
-           
-            ref={fileInput2}
-            id="profileDocument"
-            name="profileDocument"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            className="mt-1 block w-full"
-          />
-        </div>
-
-        {/* Submit Button */}
-        <div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
+      <Toaster />
+      {user ? (
+        <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg text-center relative">
+          {/* 🔥 Edit Button */}
           <button
-            type="submit"
-            className="w-full py-2 px-4 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow"
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition"
+            onClick={() => setIsEditing(true)}
           >
-            Submit
+            <Pencil size={24} />
           </button>
+
+          {/* 🔥 Profile Picture */}
+          <label className="relative block mx-auto w-24 h-24 rounded-full overflow-hidden border-4 border-gray-200 hover:border-blue-500 transition cursor-pointer">
+          <img
+  src={
+    profileFile
+      ? URL.createObjectURL(profileFile) // Show preview if new image is selected
+      : user?.profilePicture
+      ? `/uploads/${user.email}/${user.profilePicture}` // Use stored image if available
+      : "/default-avatar.png" // Fallback
+  }
+  alt="Profile"
+  className="w-full h-full object-cover"
+/>
+            {isEditing && (
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                name="profilePicture"
+                onChange={handleFileChange}
+                className="absolute inset-0 opacity-0 cursor-pointer"
+              />
+            )}
+          </label>
+
+          {/* 🔥 Profile Document */}
+          {user.profileDocument ? (
+            <p className="mt-2 text-sm text-gray-600">
+              <strong>Resume/CV:</strong>{" "}
+              <a href={`./app/uploads/${user.email}/${user.profileDocument}`} download={`${user.profileDocument}`} className="text-blue-600 font-medium hover:underline">Download</a>
+            </p>
+          ) : (
+            <p className="mt-2 text-sm text-gray-500">No document uploaded</p>
+          )}
+
+          {/* 🔥 User Info / Edit Form */}
+          {!isEditing ? (
+            <>
+              <h2 className="text-2xl font-semibold mt-4 text-gray-800">{user.name || "N/A"}</h2>
+              <p className="text-gray-500">{user.profileDesignation || "No designation"}</p>
+              <p className="text-gray-600">{user.email}</p>
+              <p className="text-gray-600">{user.contactNumber || "No contact"}</p>
+            </>
+          ) : (
+            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+              <input
+                type="text"
+                name="name"
+                value={user.name || ""}
+                onChange={handleInputChange}
+                placeholder="Name"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200"
+              />
+
+              {/* 🔥 Dropdown for Designation */}
+              <select
+                name="profileDesignation"
+                value={user.profileDesignation || ""}
+                onChange={handleInputChange}
+                className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring focus:ring-blue-200"
+              >
+                <option value="" disabled>Select Designation</option>
+                <option value="Student">Student</option>
+                <option value="Faculty">Faculty</option>
+                <option value="Architect">Architect</option>
+                <option value="Institution">Institution</option>
+                <option value="Architectural Firm">Architectural Firm</option>
+              </select>
+
+              <input
+                type="text"
+                name="contactNumber"
+                value={user.contactNumber || ""}
+                onChange={handleInputChange}
+                placeholder="Contact Number"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200"
+              />
+
+              {/* 🔥 File Upload for Profile Document */}
+              <label className="block w-full p-3 text-center text-blue-600 border border-blue-300 rounded-lg cursor-pointer hover:bg-blue-50 transition">
+                Upload Document
+                <input
+                  type="file"
+                  accept=".pdf"
+                  ref={docInputRef}
+                  name="profileDocument"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(false)}
+                  className="py-2 px-5 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="py-2 px-5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          )}
         </div>
-      </form>
+      ) : (
+        <p className="text-gray-600">Loading profile...</p>
+      )}
     </div>
   );
 };

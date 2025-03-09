@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-      <footer className="bg-black text-white py-6">
+      <footer className="bg-black text-white py-6 sticky mt-[22vh]">
         <div className="max-w-7xl mx-auto px-6 md:flex md:justify-between md:items-center">
           {/* Left Section - Brand */}
           <div className="text-center md:text-left">

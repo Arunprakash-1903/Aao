@@ -125,6 +125,20 @@ export async function getRecentWorkShop() {
     }[0..2]`
   );
 }
+export async function getRecentJobs() {
+  return client.fetch(
+    groq`*[_type=='job' ] | order(_createdAt asc){
+      _id,
+        title,
+        _type,
+        "slug":slug.current,
+        publishedAt,
+        "image":mainImage.asset->url,
+       
+      
+    }[0..2]`
+  );
+}
 export async function getAuthorById(id:string) {
   return client.fetch(
     groq`*[_type == 'author' && _id == $id][0]{

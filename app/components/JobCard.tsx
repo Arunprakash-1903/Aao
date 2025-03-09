@@ -6,7 +6,7 @@ const JobCard = ({ job }) => {
       Experience,
       salary,
       location,
-      description,
+      jobDescription,
       
       createdAt,
     } = job;
@@ -52,7 +52,7 @@ console.log(createdAt);
         </div>
   
         {/* Description */}
-        <p className="text-sm text-gray-800 mt-2">{description}</p>
+        {/* <p className="text-sm text-gray-800 mt-2">{jobDescription}</p> */}
   
     
   

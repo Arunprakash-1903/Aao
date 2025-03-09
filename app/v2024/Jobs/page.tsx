@@ -69,7 +69,9 @@ export default async function  Home() {
   
   const session=await getServerSession(authOptions)
 const response=await fetch(`${process.env.NEXTAUTH_URL}/api/jobs/get/all`,{cache:"no-store"})
+const response2 = await fetch(`${process.env.NEXTAUTH_URL}/api/jobs/get/recent`);
 const jobs=await response.json()
+const jobsR=await response2.json()
       const user=await prisma.user.findUnique({where: { email:session?.user?.email ||"" },});
 console.log("----------------> "+user);
 
@@ -203,10 +205,14 @@ src={mainContent[0].video}>
         {/* Sidebar Section */}
        <div>
           {/* Welcome Card */}
-        
-
+          <h4 className="text-2xl font-semibold mb-4">Recent Jobs</h4>
+          {jobsR.map((job: any, index: number) => (
+          <Link key={index} href={`/v2024/Jobs/${job.id}`}>
+            <JobCard key={index} job={job} />
+          </Link>
+             ))}
           {/* About Us Section */}
-         
+     
           
         </div> 
       </main>
