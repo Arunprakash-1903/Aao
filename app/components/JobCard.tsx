@@ -6,7 +6,7 @@ const JobCard = ({ job }) => {
       Experience,
       salary,
       location,
-      jobDescription,
+
       
       createdAt,
     } = job;
