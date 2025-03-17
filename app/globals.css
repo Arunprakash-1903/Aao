@@ -81,4 +81,9 @@
   }
 }
 
-
+.ql-container {
+  min-height: 150px;
+}
+.ql-editor {
+  min-height: 200px;
+}

@@ -1,6 +1,7 @@
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = "" // Disable shadow database temporarily
 
 }
 //mysql://mwvhlumy_admin:Arun@2002@162.240.107.254:3306/mwvhlumy_AAO_db2
@@ -34,17 +35,38 @@ model User {
   
 
   workshopapplyed workshopapplyed[]
+  fdpapplyed FDPapplyed[]
 }
 model Workshop{
-  id               Int        @id @unique
-  slug             String
+  id               Int @id @default(autoincrement())
+  slug             String?
+  title            String?
+  description      String?
+  body             String?
+  image            String?
+  publishedAt      DateTime?  @default(now()) 
+  
    
 
 
 
-  workshopapplyed workshopapplyed[]
+ workshopapplyed workshopapplyed[]
 }
+model FDP{
+  id               Int @id @default(autoincrement())
+  slug             String?
+  title            String?
+  description      String?
+  body             String?
+  image            String?
+  publishedAt      DateTime?  @default(now()) 
+  
+   
 
+
+
+ fdpapplyed FDPapplyed[]
+}
 model workshopapplyed{
    id               Int        @id @default(autoincrement())
    userId           Int
@@ -53,6 +75,17 @@ model workshopapplyed{
     workshop        Workshop     @relation(fields: [workshopId], references: [id])
 
   @@unique([userId, workshopId]) // Ensure a user cannot purchase the same course twice
+
+
+}
+model FDPapplyed{
+   id               Int        @id @default(autoincrement())
+   userId           Int
+   fdpId       Int
+    user       User    @relation(fields: [userId], references: [id])
+    fdp        FDP   @relation(fields: [fdpId], references: [id])
+
+  @@unique([userId, fdpId]) // Ensure a user cannot purchase the same course twice
 
 
 }

@@ -9,11 +9,15 @@ import RecentPost from "app/components/RecentPost";
 
 
 export default async function  Home() {
-  const workshops:FDP[] =await getFDP()
-  const rfdp:FDP[] =await getRecentFDP()
+  const res=await fetch(`${process.env.NEXTAUTH_URL}/api/fdp/get`)
+  const workshops=await res.json()
+  console.log(workshops);
+  const res2 = await fetch(`${process.env.NEXTAUTH_URL}/api/fdp/recent`);
+  const rfdp=await res2.json()
+
   const mainContent=await getMainPageContent("FDP")
  
-  {workshops.map(workshop=>(console.log(workshop.description)))}
+  
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -47,7 +51,7 @@ src={mainContent[0].video}>
               <h3 className="ext-2xl font-semibold ">Upcomming Faculty Development Programme</h3>
               <div className="grid grid-cols-1 lg:grid-cols-3 p-4 gap-4">
            
-               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+               {workshops.data.map(workshop=>(<Card key={workshop._id} type="fdp" slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
               
               </div>
               </div>
@@ -69,8 +73,8 @@ src={mainContent[0].video}>
           {/* About Us Section */}
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold mb-2">Recent FDP</h3>
-          {rfdp.map(((fdp,index)=>(
-             <RecentPost type={fdp._type} key={index} title={fdp.title} slug={fdp.slug} image={fdp.image} publishedAt={fdp.publishedAt.substring(0,10)}/>
+          {rfdp.data.map(((fdp,index)=>(
+             <RecentPost type="fdp" key={index} title={fdp.title} slug={fdp.slug} image={fdp.image} publishedAt={fdp.publishedAt.substring(0,10)}/>
           )))}
          
           </div>

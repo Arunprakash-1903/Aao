@@ -1,9 +1,9 @@
 
-import { PortableText } from '@portabletext/react'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
-
+import RichTextRenderer from "./RichTextRenderer"
 
 
 const Card = ({title,slug,type,smallDesc,publishedAt,image}) => {
@@ -22,7 +22,8 @@ const Card = ({title,slug,type,smallDesc,publishedAt,image}) => {
     {/* <p className="text-gray-600 mb-4">{body}</p> */}
     <div>
      <div className='text-gray-500'>
-    <PortableText  value={smallDesc}/>
+     {/* <RichTextRenderer content={smallDesc} /> */}
+     {/* <RichTextRenderer content={JSON.parse(smallDesc)} /> */}
     </div>
     </div>
   <Link href={`/v2024/${type}/${slug}`} className="text-blue-500 hover:underline text-sm">Read more</Link>

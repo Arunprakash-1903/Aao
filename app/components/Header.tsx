@@ -14,7 +14,7 @@ const Header = () => {
                 const response = await fetch('/api/getDes', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: "arunprakash2225@gmail.com" }),
+                    body: JSON.stringify({ email: session.user?.email}),
                 });
                 const data = await response.json();
                 setDesignation(data.jd); // Assuming API returns `{ jd: "faculty" }`

@@ -1,8 +1,8 @@
 
 
 import RecentPost from "app/components/RecentPost";
-import { getMainPageContent, getRecentWorkShop, getWorkshop } from "../../../sanity/sanity.query";
-import {Workshop} from "../../../types";
+import { getMainPageContent} from "../../../sanity/sanity.query";
+
 import Card from "app/components/Card";
 import { PortableText } from "next-sanity";
 
@@ -11,11 +11,15 @@ export default async function  Home() {
   const mainContent=await getMainPageContent('WorkShop')
   console.log(mainContent);
   
-
-  const workshops:Workshop[] =await getWorkshop()
-  const rworkshop:Workshop[]=await getRecentWorkShop()
+const res=await fetch(`${process.env.NEXTAUTH_URL}/api/workshop/get`)
+  const workshops=await res.json()
+  console.log(workshops);
+  const res2 = await fetch(`${process.env.NEXTAUTH_URL}/api/workshop/recent`);
+  const rworkshop=await res2.json()
+  console.log(rworkshop);
+  
   //{console.log(workshops);}
-  {workshops.map(workshop=>(console.log(workshop.description)))}
+  {workshops.data.map(workshop=>(console.log(workshop.description)))}
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -45,7 +49,7 @@ src={mainContent[0].video}>
               <h3 className="ext-2xl font-semibold mb-4 ">Upcoming Workshops</h3>
               <div className="grid grid-cols-1 lg:grid-cols-3 p-4 gap-4">
            
-               {workshops.map(workshop=>(<Card key={workshop._id} type={workshop._type} slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
+               {workshops.data.map(workshop=>(<Card key={workshop.id} type="workshop" slug={workshop.slug}image={workshop.image}title={workshop.title} publishedAt={workshop.publishedAt.substring(0,10)} smallDesc={workshop.description} />))}
               
               </div>
               </div>
@@ -67,8 +71,8 @@ src={mainContent[0].video}>
           {/* About Us Section */}
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold mb-2">Recent WorkShops</h3>
-            {rworkshop.map(((fdp,index)=>(
-             <RecentPost key={index} type={fdp._type} title={fdp.title} slug={fdp.slug} image={fdp.image} publishedAt={fdp.publishedAt.substring(0,10)}/>
+            {rworkshop.data.map(((fdp,index)=>(
+             <RecentPost key={index} type="workshop" title={fdp.title} slug={fdp.slug} image={fdp.image} publishedAt={fdp.publishedAt.substring(0,10)}/>
           )))}
           </div>
           

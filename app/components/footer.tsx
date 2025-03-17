@@ -4,7 +4,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-6 md:flex md:justify-between md:items-center">
           {/* Left Section - Brand */}
           <div className="text-center md:text-left">
-            <h2 className="text-xl font-semibold">Aao</h2>
+            <h2 className="text-xl font-semibold">aa.o</h2>
             <p className="text-sm opacity-70">© {new Date().getFullYear()} All rights reserved.</p>
           </div>
   
