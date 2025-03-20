@@ -3,7 +3,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
-import RichTextRenderer from "./RichTextRenderer"
+import RichTextRenderer from './RichTextRenderer'
+
 
 
 const Card = ({title,slug,type,smallDesc,publishedAt,image}) => {
@@ -23,7 +24,7 @@ const Card = ({title,slug,type,smallDesc,publishedAt,image}) => {
     <div>
      <div className='text-gray-500'>
      {/* <RichTextRenderer content={smallDesc} /> */}
-     {/* <RichTextRenderer content={JSON.parse(smallDesc)} /> */}
+     <RichTextRenderer content={JSON.parse(smallDesc)} />
     </div>
     </div>
   <Link href={`/v2024/${type}/${slug}`} className="text-blue-500 hover:underline text-sm">Read more</Link>

@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../../../prisma/prisma';
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, { params}:any) {
   try {
     await prisma.FDP.delete({
-      where: { id: Number(params.id) },
+      where: { id: Number( params.id) },
     });
 
     return NextResponse.json({ message: 'Workshop deleted successfully' }, { status: 200 });
