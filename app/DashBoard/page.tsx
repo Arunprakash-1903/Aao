@@ -78,7 +78,7 @@ export default function TableDemo() {
   const handleDeleteJob = async (id: number) => {
     if (confirm('Are you sure you want to delete this workshop?')) {
       try {
-        const res = await fetch(`/api/fdp/delete/${id}`, {
+        const res = await fetch(`/api/jobs/delete/${id}`, {
           method: 'DELETE',
         });
 
@@ -263,7 +263,7 @@ console.log(jobs);
         <div className="flex justify-between items-center my-4">
           <h2 className="text-2xl font-bold">Jobs</h2>
           <button 
-            onClick={() => window.location.href = '/DashBoard/new-workshop'} 
+            onClick={() => window.location.href = '/DashBoard/new-job'} 
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-200 ease-in-out"
           >
             + New JOb

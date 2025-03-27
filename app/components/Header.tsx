@@ -57,6 +57,7 @@ console.log(designation);
                         <a href="/v2024/Jobs">Jobs</a>
                         {designation === 'Faculty' && <a href="/v2024/fdp">FDP</a>}
                         <a href="/v2024/Surveys">Surveys</a>
+                        <a href="/v2024/Discussions">Discussions</a>
                     </div>
                 </div>
             </div>

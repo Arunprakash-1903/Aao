@@ -22,7 +22,7 @@ export default function NewWorkshopPage() {
     };
 
     try {
-      const res = await fetch('/api/fdp/create', {
+      const res = await fetch('/api/workshop/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

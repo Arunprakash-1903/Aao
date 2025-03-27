@@ -15,7 +15,7 @@ export default function Home() {
     // Fetch workshops
     const fetchWorkshops = async () => {
       try {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/fdp/get`);
+        const res = await fetch('/api/fdp/get');
         if (!res.ok) throw new Error(`Failed to fetch workshops, status: ${res.status}`);
         const data = await res.json();
         setWorkshops(data.data);
@@ -27,7 +27,7 @@ export default function Home() {
     // Fetch recent FDP
     const fetchRecentFdp = async () => {
       try {
-        const res2 = await fetch(`${process.env.NEXTAUTH_URL}/api/fdp/recent`);
+        const res2 = await fetch('/api/fdp/recent');
         if (!res2.ok) throw new Error(`Failed to fetch recent FDP, status: ${res2.status}`);
         const data2 = await res2.json();
         setRfdp(data2.data);

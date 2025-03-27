@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const fetchWorkshops = async () => {
       try {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/workshop/get`);
+        const res = await fetch("/api/workshop/get");
         if (!res.ok) throw new Error(`Failed to fetch workshops, status: ${res.status}`);
         const data = await res.json();
         setWorkshops(data.data);
@@ -25,7 +25,7 @@ export default function Home() {
 
     const fetchRecentWorkshops = async () => {
       try {
-        const res2 = await fetch(`${process.env.NEXTAUTH_URL}/api/workshop/recent`);
+        const res2 = await fetch('/api/workshop/recent');
         if (!res2.ok) throw new Error(`Failed to fetch recent workshops, status: ${res2.status}`);
         const data2 = await res2.json();
         setRworkshop(data2.data);

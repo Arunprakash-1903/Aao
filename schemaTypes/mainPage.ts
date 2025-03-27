@@ -15,7 +15,8 @@ export default {
                   { title: 'FDP', value: 'FDP' },
                   { title: 'Home', value: 'Home' },
                   {title :'Jobs',value:'Jobs'},
-                  {title :'Surveys',value:'Surveys'}
+                  {title :'Surveys',value:'Surveys'},
+                  {title :'Discussions',value:'Discussions'}
                 ],
               },
           },
