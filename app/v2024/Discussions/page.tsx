@@ -1,52 +1,32 @@
-'use client';
-
-import { useEffect, useState } from "react";
 import RecentPost from "app/components/RecentPost";
 import { getMainPageContent } from "../../../sanity/sanity.query";
 import Card from "app/components/Card";
 import { PortableText } from "next-sanity";
 
-export default function Home() {
-  const [workshops, setWorkshops] = useState([]);
-  const [rworkshop, setRworkshop] = useState([]);
-  const [mainContent, setMainContent] = useState([]);
+async function fetchWorkshops() {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/workshop/get`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`Failed to fetch workshops, status: ${res.status}`);
+  const data = await res.json();
+  return data.data;
+}
 
-  useEffect(() => {
-    const fetchWorkshops = async () => {
-      try {
-        const res = await fetch("/api/workshop/get");
-        if (!res.ok) throw new Error(`Failed to fetch workshops, status: ${res.status}`);
-        const data = await res.json();
-        setWorkshops(data.data);
-      } catch (error) {
-        console.error('Error fetching workshops:', error);
-      }
-    };
+async function fetchRecentWorkshops() {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/workshop/recent`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`Failed to fetch recent workshops, status: ${res.status}`);
+  const data = await res.json();
+  return data.data;
+}
 
-    const fetchRecentWorkshops = async () => {
-      try {
-        const res2 = await fetch('/api/workshop/recent');
-        if (!res2.ok) throw new Error(`Failed to fetch recent workshops, status: ${res2.status}`);
-        const data2 = await res2.json();
-        setRworkshop(data2.data);
-      } catch (error) {
-        console.error('Error fetching recent workshops:', error);
-      }
-    };
-
-    const fetchMainContent = async () => {
-      try {
-        const content = await getMainPageContent('Discussions');
-        setMainContent(content);
-      } catch (error) {
-        console.error('Error fetching main content:', error);
-      }
-    };
-
-    fetchWorkshops();
-    fetchRecentWorkshops();
-    fetchMainContent();
-  }, []);
+export default async function Home() {
+  const [workshops, rworkshop, mainContent] = await Promise.all([
+    fetchWorkshops(),
+    fetchRecentWorkshops(),
+    getMainPageContent("Discussions"),
+  ]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -73,7 +53,7 @@ export default function Home() {
             )}
 
             <div className="flex flex-col items-center justify-center mt-4">
-              <h3 className="text-2xl font-semibold mb-4">Upcoming Upcomming Discussions</h3>
+              <h3 className="text-2xl font-semibold mb-4">Upcoming Discussions</h3>
               <div className="grid grid-cols-1 lg:grid-cols-3 p-4 gap-4">
                 {workshops.map((workshop) => (
                   <Card
