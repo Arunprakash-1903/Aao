@@ -1,20 +1,27 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import { Pencil } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import { useState, useEffect } from "react";
+import { PencilIcon, DownloadIcon } from "@heroicons/react/solid";
 import { useSession } from "next-auth/react";
 
 
-const ProfilePage = () => {
-  const [user, setUser] = useState<any>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const docInputRef = useRef<HTMLInputElement>(null);
-  const [profileFile, setProfileFile] = useState<File | null>(null);
-  const [documentFile, setDocumentFile] = useState<File | null>(null);
+export default function ProfileUploadForm() {
+  const [userData, setUserData] = useState<any>(null);
   const {data:session}=useSession()
 
+  const [formData, setFormData] = useState({
+    email: "",
+    name: "",
+    contactNumber: "",
+    profileDesignation: "",
+  });
+
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [profileDocument, setProfileDocument] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [editMode, setEditMode] = useState(false);
   // 🔥 Fetch user data
   useEffect(() => {
     
@@ -23,12 +30,12 @@ const ProfilePage = () => {
         const response = await fetch("/api/purchased", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email:session.user.email }), // Replace with dynamic email
+          body: JSON.stringify({ email:session?.user?.email }), // Replace with dynamic email
         });
 
         const data = await response.json();
         if (!response.ok) throw new Error(data.message);
-        setUser(data);
+        setUserData(data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -37,195 +44,193 @@ const ProfilePage = () => {
     fetchUserData();
   }, [session]);
 
-  // 🔥 Handle File Selection
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files.length > 0) {
-      const file = files[0];
+console.log(userData);
 
-      if (name === "profilePicture") {
-        setProfileFile(file);
-        setUser((prev: any) => ({ ...prev, previewUrl: URL.createObjectURL(file) }));
-      } else if (name === "profileDocument") {
-        setDocumentFile(file);
+  useEffect(() => {
+    setFormData({
+      email: session?.user.email,
+      name: userData?.name,
+      contactNumber: userData?.contactNumber,
+      profileDesignation: userData?.profileDesignation,
+    });
+    setPreviewImage(userData?.profilePicture);
+  }, [userData,session]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (e.target.name === "profilePicture") {
+        setProfilePicture(file);
+        setPreviewImage(URL.createObjectURL(file));
+      } else {
+        setProfileDocument(file);
       }
     }
   };
 
-  // 🔥 Handle Input Change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setUser((prev: any) => ({ ...prev, [name]: value }));
-  };
-
-  // 🔥 Handle Form Submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
-    if (!user) return;
-  
-    const formData = new FormData();
-    formData.append("email", user.email);
-    formData.append("firstName", user.name || "");
-    formData.append("contactNumber", user.contactNumber || "");
-    formData.append("profileDesignation", user.profileDesignation || "");
-  
-    if (profileFile) formData.append("profilePicture", profileFile);
-    if (documentFile) formData.append("profileDocument", documentFile);
-  
+    const data = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      data.append(key, value);
+    });
+
+    if (profilePicture) data.append("profilePicture", profilePicture);
+    if (profileDocument) data.append("profileDocument", profileDocument);
+
     try {
-      const response = await fetch("/api/updateProfile", {
+      const response = await fetch("/api/upload", {
         method: "POST",
-        body: formData,
+        body: data,
       });
-  
+
       const result = await response.json();
-      if (response.ok) {
-        toast.success("Profile updated successfully!");
-        
-        // 🔥 Ensure profile picture is updated correctly
-        setUser((prev: any) => ({
-          ...prev,
-          profilePicture: result.profilePicture, // Ensure backend returns updated filename
-        }));
-  
-        setIsEditing(false);
+      if (result.status === "success") {
+        setUserData({
+          email: result.email,
+          name: result.name,
+          contactNumber: result.contactNumber,
+          profileDesignation: result.profileDesignation,
+          profilePicture: result.profilePicture || userData.profilePicture,
+          profileDocument: result.profileDocument || userData.profileDocument,
+        });
+        setMessage("✅ Profile updated successfully!");
+        setEditMode(false);
       } else {
-        toast.error(result.error || "Failed to update profile.");
+        setMessage(`❌ Error: ${result.error}`);
       }
     } catch (error) {
-      console.error("Error updating profile:", error);
-      toast.error("An error occurred.");
+      setMessage("❌ Upload failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
-      <Toaster />
-      {user ? (
-        <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg text-center relative">
-          {/* 🔥 Edit Button */}
-          <button
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition"
-            onClick={() => setIsEditing(true)}
-          >
-            <Pencil size={24} />
-          </button>
+    <div className="flex justify-center items-center mt-8 mb-[500px]">
+    <div className="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-lg border border-gray-200 ">
+      {!editMode ? (
+        <><div className="flex-col justify-between items-center w-[500px]">
+          <div className="flex justify-between items-center mb-4 ">
+            <h2 className="text-2xl font-semibold text-gray-800">Profile Details</h2>
+            <button onClick={() => setEditMode(true)}>
+              <PencilIcon className="h-6 w-6 text-gray-500 hover:text-gray-700" />
+            </button>
+          </div>
 
-          {/* 🔥 Profile Picture */}
-          <label className="relative block mx-auto w-24 h-24 rounded-full overflow-hidden border-4 border-gray-200 hover:border-blue-500 transition cursor-pointer">
-          <img
-  src={
-    profileFile
-      ? URL.createObjectURL(profileFile) // Show preview if new image is selected
-      : user?.profilePicture
-      ? `/uploads/${user.email}/${user.profilePicture}` // Use stored image if available
-      : "/default-avatar.png" // Fallback
-  }
-  alt="Profile"
-  className="w-full h-full object-cover"
-/>
-            {isEditing && (
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                name="profilePicture"
-                onChange={handleFileChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-            )}
-          </label>
+         {userData&&( <div className="flex items-center gap-4">
+            <img src={userData.profilePicture} alt="Profile" className="h-20 w-20 rounded-full border border-gray-300" />
+            <div>
+              <p className="text-lg font-semibold">{userData.name}</p>
+              <p className="text-gray-600">{userData.contactNumber}</p>
+              <p className="text-gray-600">{userData.profileDesignation}</p>
+            </div>
+          </div>)
+      }
+          {userData?.profileDocument && (
+            <div className="mt-4">
+              <a
+                href={userData.profileDocument}
+               
+                className="flex items-center text-blue-500 hover:underline"
+              >
+                <DownloadIcon className="h-5 w-5 mr-1" />
+                Download Profile Document
+              </a>
+            </div>
+          )}
+           </div>
+        </>
+       
+      ) : (
+        <>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Update Profile</h2>
 
-          {/* 🔥 Profile Document */}
-          {user.profileDocument ? (
-            <p className="mt-2 text-sm text-gray-600">
-              <strong>Resume/CV:</strong>{" "}
-              <a href={`./app/uploads/${user.email}/${user.profileDocument}`} download={`${user.profileDocument}`} className="text-blue-600 font-medium hover:underline">Download</a>
+          {message && (
+            <p className={`mb-4 p-3 text-center text-white rounded ${message.includes("✅") ? "bg-green-500" : "bg-red-500"}`}>
+              {message}
             </p>
-          ) : (
-            <p className="mt-2 text-sm text-gray-500">No document uploaded</p>
           )}
 
-          {/* 🔥 User Info / Edit Form */}
-          {!isEditing ? (
-            <>
-              <h2 className="text-2xl font-semibold mt-4 text-gray-800">{user.name || "N/A"}</h2>
-              <p className="text-gray-500">{user.profileDesignation || "No designation"}</p>
-              <p className="text-gray-600">{user.email}</p>
-              <p className="text-gray-600">{user.contactNumber || "No contact"}</p>
-            </>
-          ) : (
-            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
                 type="text"
                 name="name"
-                value={user.name || ""}
-                onChange={handleInputChange}
+                value={formData.name}
                 placeholder="Name"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200"
+                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+                onChange={handleChange}
               />
-
-              {/* 🔥 Dropdown for Designation */}
-              <select
-                name="profileDesignation"
-                value={user.profileDesignation || ""}
-                onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring focus:ring-blue-200"
-              >
-                <option value="" disabled>Select Designation</option>
-                <option value="Student">Student</option>
-                <option value="Faculty">Faculty</option>
-                <option value="Architect">Architect</option>
-                <option value="Institution">Institution</option>
-                <option value="Architectural Firm">Architectural Firm</option>
-              </select>
-
               <input
                 type="text"
                 name="contactNumber"
-                value={user.contactNumber || ""}
-                onChange={handleInputChange}
+                value={formData.contactNumber}
                 placeholder="Contact Number"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200"
+                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+                onChange={handleChange}
               />
+            </div>
 
-              {/* 🔥 File Upload for Profile Document */}
-              <label className="block w-full p-3 text-center text-blue-600 border border-blue-300 rounded-lg cursor-pointer hover:bg-blue-50 transition">
-                Upload Document
-                <input
-                  type="file"
-                  accept=".pdf"
-                  ref={docInputRef}
-                  name="profileDocument"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </label>
+            <input
+              type="text"
+              name="profileDesignation"
+              value={formData.profileDesignation}
+              placeholder="Profile Designation"
+              className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+              onChange={handleChange}
+            />
 
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(false)}
-                  className="py-2 px-5 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="py-2 px-5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
-      ) : (
-        <p className="text-gray-600">Loading profile...</p>
+            <div className="space-y-2">
+              <label className="block font-medium text-gray-700">Profile Picture</label>
+              <input
+                type="file"
+                name="profilePicture"
+                accept="image/*"
+                className="w-full p-3 border rounded cursor-pointer hover:bg-gray-50 transition"
+                onChange={handleFileChange}
+              />
+              {previewImage && <img src={previewImage} alt="Preview" className="mt-2 h-24 w-24 object-cover rounded-lg border border-gray-300" />}
+            </div>
+
+            <div className="space-y-2">
+              <label className="block font-medium text-gray-700">Profile Document</label>
+              <input
+                type="file"
+                name="profileDocument"
+                className="w-full p-3 border rounded cursor-pointer hover:bg-gray-50 transition"
+                onChange={handleFileChange}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition flex justify-center items-center"
+              >
+                {loading ? "Uploading..." : "Update Profile"}
+              </button>
+
+              <button
+                type="button"
+                className="flex-1 bg-gray-300 text-gray-700 py-3 rounded hover:bg-gray-400 transition"
+                onClick={() => setEditMode(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </>
       )}
     </div>
+    </div>
   );
-};
-
-export default ProfilePage;
+}
