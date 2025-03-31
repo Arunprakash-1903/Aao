@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, SelectHTMLAttributes } from "react";
+import { useState, useEffect } from "react";
 import { PencilIcon, DownloadIcon } from "@heroicons/react/solid";
 import { useSession } from "next-auth/react";
 import RecentPost from "app/components/RecentPost";
