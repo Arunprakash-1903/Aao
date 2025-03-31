@@ -108,6 +108,8 @@ console.log(userData);
       }
     } catch (error) {
       setMessage("❌ Upload failed. Please try again.");
+      console.log(error);
+      
     } finally {
       setLoading(false);
     }

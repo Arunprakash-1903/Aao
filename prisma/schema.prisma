@@ -130,20 +130,20 @@ model Purchase {
 }
 model Job {
   id             Int      @id @default(autoincrement())
-  jobTitle       String
-  jobDescription String
-  salary         Float?
+  jobTitle       String?
+  jobDescription String?
+  salary         String?
   
   location       String?
-  Experience     Int?
+  Experience     String?
   company        String?
   
   company_about  String?
   email          String?
 
-  jobType        JobType
+  jobType        String? 
   createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+ 
   apilicants     Applyed[]
 }
 // model WorkshopApplyed{

@@ -17,12 +17,12 @@ export default function NewJobPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = {
+    const data :{jobTitle:string,jobDescription:any,salary:string,location:string,experience:string,company:string,companyAbout:any,email:string,jobType:string}= {
       jobTitle,
       jobDescription,
-      salary: salary ? parseFloat(salary) : null,
+      salary,
       location,
-      experience: experience ? parseInt(experience) : null,
+      experience,
       company,
       companyAbout,
       email,
@@ -74,7 +74,7 @@ export default function NewJobPage() {
         <div>
           <label className="block text-sm font-medium text-gray-700">Salary</label>
           <input
-            type="number"
+            type="text"
             value={salary}
             onChange={(e) => setSalary(e.target.value)}
             className="w-full mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -97,7 +97,7 @@ export default function NewJobPage() {
         <div>
           <label className="block text-sm font-medium text-gray-700">Experience (Years)</label>
           <input
-            type="number"
+            type="text"
             value={experience}
             onChange={(e) => setExperience(e.target.value)}
             className="w-full mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"

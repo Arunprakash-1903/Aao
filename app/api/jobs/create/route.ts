@@ -13,39 +13,51 @@ export async function POST(req: Request) {
             companyAbout, 
             email, 
             jobType 
-        }: { 
-            jobTitle: string; 
-            jobDescription: string; 
-            salary?: number; 
-            location?: string; 
-            experience?: number; 
-            company?: string; 
-            companyAbout?: string; 
-            email?: string; 
-            jobType: string; 
-        } = await req.json();
+        }:{jobTitle:string,jobDescription:any,salary:string,location:string,experience:string,company:string,companyAbout:any,email:string,jobType:string}
+         = await req.json();
 
         // Validate required fields
         if (!jobTitle || !jobDescription || !jobType) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
+        console.log({ 
+            jobTitle, 
+            jobDescription, 
+            salary, 
+           location, 
+           experience:experience+"", 
+            company, 
+            companyAbout, 
+            email, 
+            jobType 
+        });
+        
 
         // Create new job entry
-        const newJob = await prisma.job.create({
+        if(   jobTitle&&
+            jobDescription&&
+            salary&&
+           location&&
+           experience+""&&
+            company&&
+            companyAbout&&
+            email&&
+            jobType )
+       await prisma.job.create({
             data: {
                 jobTitle,
-                jobDescription,
-                salary,
+                jobDescription:JSON.stringify(jobDescription) || '{}',
+                salary:salary+"",
                 location,
-                experience,
+                Experience :experience+"",
                 company,
-                companyAbout,
+                company_about:JSON.stringify(companyAbout) ||'{}',
                 email,
                 jobType,
             },
         });
 
-        return NextResponse.json(newJob, { status: 201 });
+        return NextResponse.json( { status: 201 });
     } catch (error) {
         console.error('Error creating job:', error);
         return NextResponse.json({ error: 'Failed to create job' }, { status: 500 });

@@ -3,6 +3,8 @@ import { useSession } from 'next-auth/react';
 
 import React, { useEffect, useState } from 'react'
 import { getCourseBySlug } from '../../../sanity/sanity.query';
+import RecentPost from 'app/components/RecentPost';
+
 
 //import course from 'schemaTypes/course';
 
@@ -14,6 +16,7 @@ const Page = () => {
   const [error, setError] = useState(null); 
   const [cdata, setCdata] = useState<any[]>([]);
   const { data: session} = useSession();
+  const [rworkshop, setRworkshop] = useState([]);
   useEffect(() => {
     
     async function fetchUserWithCourses(email: string) {
@@ -39,12 +42,22 @@ const Page = () => {
         setError(err.message || 'Failed to fetch courses'); // Set error message
       } finally {
         setLoading(false);// Stop loading spinner
-      }
-    }
-    if(session)
-     fetchUserWithCourses(session?.user?.email)
-   
-  }, [])
+      }}
+      const fetchRecentWorkshops = async () => {
+        try {
+          const res2 = await fetch('/api/workshop/recent');
+          if (!res2.ok) throw new Error(`Failed to fetch recent workshops, status: ${res2.status}`);
+          const data2 = await res2.json();
+          setRworkshop(data2.data);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching recent workshops:', error);
+        }
+      };
+   if(session)
+      fetchUserWithCourses(session?.user?.email)
+      fetchRecentWorkshops()
+   }, [session])
   
   useEffect(() => {
     
@@ -73,63 +86,82 @@ const Page = () => {
   if (loading) return <div>Loading courses...</div>;
   if (error) return <div>Error: {error}</div>;
   return (
-   <>
-          {/* Header */}
-        
-          {/* Main Content */}
-          <div className="p-6 bg-gray-100 min-h-screen">
-            <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-              {/* Page Header */}
-              <div className="p-6  text-black text-center">
-                <h1 className="text-3xl font-bold">My Courses</h1>
-              </div>
-    
-              {/* Course List */}
-              <div className="p-6 space-y-6">
-                {cdata? (
-                  cdata.map((course:any) => (
-                    <div
-                      key={course?.id}
-                      className="border border-gray-200 rounded-lg shadow-sm overflow-hidden bg-white"
+<>
+  {/* Main Content */}
+  <div className="p-6 bg-gray-100 min-h-screen flex justify-center">
+    <div className="max-w-6xl w-full grid grid-cols-3 gap-8">
+      
+      {/* Left Section (Courses) */}
+      <div className="col-span-2 bg-white rounded-lg shadow-lg overflow-hidden">
+        {/* Page Header */}
+        <div className="p-6 text-black text-center">
+          <h1 className="text-3xl font-bold">My Courses</h1>
+        </div>
+
+        {/* Course List */}
+        <div className="p-6 space-y-6">
+          {cdata ? (
+            cdata.map((course: any) => (
+              <div
+                key={course?.id}
+                className="border border-gray-200 rounded-lg shadow-sm overflow-hidden bg-white"
+              >
+                {/* Course Image */}
+                <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
+                  <img
+                    src={course?.image || '/default-course.png'}
+                    alt={course?.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Course Details */}
+                <div className="p-4">
+                  <div className="flex items-center justify-between space-x-6">
+                    <h2 className="text-xl font-bold text-gray-800">{course?.title}</h2>
+                    <button
+                      onClick={() => {
+                        window.location.href = '/v2024/Mycourses/modules';
+                      }}
+                      className="w-full sm:w-auto py-3 px-6 bg-indigo-600 text-white text-lg font-semibold rounded-md shadow-md hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                      {/* Course Image */}
-                      <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
-                        <img
-                          src={course?.image || '/default-course.png'}
-                          alt={course?.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-    
-                      {/* Course Details */}
-                      <div className="p-4">
-                        <div className='flex items-center justify-between space-x-6'>
-                        <h2 className="text-xl font-bold text-gray-800">{course?.title}</h2>
-                        <button onClick={()=>{
-                      window.location.href='/v2024/Mycourses/modules'
-                        }} className="w-full sm:w-auto py-3 px-6 bg-indigo-600 text-white text-lg font-semibold rounded-md shadow-md hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-              Learn
-            </button>
-            </div>
-                        {/* <p className="text-gray-600 mt-2">{course?.description}</p> */}
-                        {/* <PortableText value={course?.description}/> */}
-                        <div className="mt-4">
-                          {/* <p className="text-gray-500 text-sm">
-                            Purchased on: {course?.purchasedAt}
-                          </p> */}
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center text-gray-500 text-lg">
-                    You have not purchased any courses yet.
+                      Learn
+                    </button>
                   </div>
-                )}
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center text-gray-500 text-lg">
+              You have not purchased any courses yet.
             </div>
+          )}
+        </div>
+      </div>
+
+      {/* Right Side (Empty Space) */}
+      <div className="col-span-1">
+
+      <div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold mb-2">Recent Workshops</h3>
+            {rworkshop.map((fdp, index) => (
+              <RecentPost
+                key={index}
+                type="workshop"
+                title={fdp.title}
+                slug={fdp.slug}
+                image={fdp.image}
+                publishedAt={fdp.publishedAt.substring(0, 10)}
+              />
+            ))}
           </div>
-        </>
+        </div>
+      </div>
+    </div>
+  </div>
+</>
+
   )
 }
 

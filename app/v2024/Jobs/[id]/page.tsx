@@ -16,26 +16,26 @@ const JobCard =async ({
 const existingUser = await prisma.user.findUnique({ where: { email:session?.user?.email} });
 
   // console.log(existingUser.profileDocument);
-  function calculateDaysAgo(dateString: string): number {
-        const date=dateString.replace("T"," ")
-      //  console.log("-------"+date);
+  // function calculateDaysAgo(dateString: string): number {
+  //       const date=dateString.replace("T"," ")
+  //     //  console.log("-------"+date);
         
-        const givenDate = new Date(date);
-        const today = new Date();
-    //  console.log(givenDate)
-        // Check for valid date
-        if (isNaN(givenDate.getTime())) {
-          throw new Error("Invalid date string");
-        }
+  //       const givenDate = new Date(date);
+  //       const today = new Date();
+  //   //  console.log(givenDate)
+  //       // Check for valid date
+  //       if (isNaN(givenDate.getTime())) {
+  //         throw new Error("Invalid date string");
+  //       }
       
-        // Calculate the difference in milliseconds
-        const differenceInMs = today.getTime() - givenDate.getTime();
+  //       // Calculate the difference in milliseconds
+  //       const differenceInMs = today.getTime() - givenDate.getTime();
       
-        // Convert the difference from milliseconds to days
-        const daysAgo = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+  //       // Convert the difference from milliseconds to days
+  //       const daysAgo = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
       
-        return daysAgo;
-      }
+  //       return daysAgo;
+  //     }
   const iD=(await params)?.id as number
   const response=await fetch(`${process.env.NEXTAUTH_URL}/api/jobs/get?id=${iD}`,{cache:"no-store"})
   const jobs=await response.json()
@@ -91,9 +91,9 @@ const existingUser = await prisma.user.findUnique({ where: { email:session?.user
           <div>
             <p>
               Posted:{" "}
-              <span className="font-medium text-gray-900">
+              {/* <span className="font-medium text-gray-900">
                 {calculateDaysAgo(jobs.createdAt)} days ago
-              </span>
+              </span> */}
             </p>
           </div>
           <div>

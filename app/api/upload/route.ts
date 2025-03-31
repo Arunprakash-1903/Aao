@@ -57,7 +57,7 @@ export async function POST(req: Request) {
           uploadStream.end(buffer);
         });
       } catch (error) {
-        console.error("❌ File conversion failed");
+        console.error("❌ File conversion failed",error);
         return "";
       }
     };
