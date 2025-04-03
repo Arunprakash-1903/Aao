@@ -100,6 +100,21 @@ console.log(userData);
     if (profileDocument) data.append("profileDocument", profileDocument);
 
     try {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch("/api/purchased", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email:session?.user?.email }), // Replace with dynamic email
+          });
+  
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.message);
+          setUserData(data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
       const response = await fetch("/api/upload", {
         method: "POST",
         body: data,
@@ -117,6 +132,7 @@ console.log(userData);
         });
         setMessage("✅ Profile updated successfully!");
         setEditMode(false);
+        fetchUserData();
       } else {
         setMessage(`❌ Error: ${result.error}`);
       }
