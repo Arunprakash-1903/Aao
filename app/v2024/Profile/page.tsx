@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { PencilIcon, DownloadIcon } from "@heroicons/react/solid";
+import { PencilIcon } from "@heroicons/react/solid";
 import { useSession } from "next-auth/react";
 import RecentPost from "app/components/RecentPost";
-import Email from "next-auth/providers/email";
+
 
 export default function ProfileUploadForm() {
   const [userData, setUserData] = useState<any>(null);
