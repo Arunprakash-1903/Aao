@@ -37,14 +37,27 @@ export async function POST(req: Request) {
     let uploadedProfileDocument = "";
 
     // ✅ Upload to Cloudinary
-    const uploadToCloudinary = async (file: Blob, folder: string, resourceType: "image" | "raw") => {
+    const uploadToCloudinary = async (
+      file: Blob,
+      folder: string,
+      resourceType: "image" | "raw",
+      fileName: string // <-- Add this
+    ) => {
       try {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
-
+    
         return new Promise<string>((resolve, reject) => {
           const uploadStream = cloudinary.uploader.upload_stream(
-            { folder, resource_type: resourceType ,type:"upload"},
+            {
+              folder,
+              public_id: fileName.replace(/\.pdf$/i, ''), // remove .pdf if present (Cloudinary adds extension automatically)
+              resource_type: resourceType,
+              type: "upload",
+              use_filename: true,
+             
+              unique_filename: false, // disables random suffix
+            },
             (error, result) => {
               if (error) {
                 console.error("❌ Cloudinary Upload Error:", error);
@@ -57,18 +70,19 @@ export async function POST(req: Request) {
           uploadStream.end(buffer);
         });
       } catch (error) {
-        console.error("❌ File conversion failed",error);
+        console.error("❌ File conversion failed", error);
         return "";
       }
     };
+    
 
     if (profilePicture) {
-      uploadedProfilePicture = await uploadToCloudinary(profilePicture, `user_profiles/${email}`, "image");
+      uploadedProfilePicture = await uploadToCloudinary(profilePicture, `user_profiles/${email}`, "image","profilephoto.pdf");
       console.log("✅ Uploaded Profile Picture:", uploadedProfilePicture);
     }
 
     if (profileDocument) {
-      uploadedProfileDocument = await uploadToCloudinary(profileDocument, `user_profiles/${email}`, "raw");
+      uploadedProfileDocument = await uploadToCloudinary(profileDocument, `user_profiles/${email}/profilephoto.pdf`, "raw","profileDocument.pdf");
       console.log("✅ Uploaded Profile Document:", uploadedProfileDocument);
     }
 
