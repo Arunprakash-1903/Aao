@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { PencilIcon } from "@heroicons/react/solid";
+import { PencilIcon ,DownloadIcon} from "@heroicons/react/solid";
 import { useSession } from "next-auth/react";
 import RecentPost from "app/components/RecentPost";
 
@@ -173,7 +173,7 @@ export default function ProfileUploadForm() {
                       </div>
                     </div>
                   )}
-{/* 
+
                   {userData?.profileDocument && (
                     <div className="mt-4">
                       <a
@@ -185,7 +185,7 @@ export default function ProfileUploadForm() {
                         Download Profile Document
                       </a>
                     </div>
-                  )} */}
+                  )}
                 </div>
               </>
             ) : (
@@ -209,7 +209,7 @@ export default function ProfileUploadForm() {
                       onChange={handleChange}
                     />
                     <input
-                      type="text"
+                      type="number"
                       name="contactNumber"
                       value={formData.contactNumber || ""}
                       placeholder="Contact Number"

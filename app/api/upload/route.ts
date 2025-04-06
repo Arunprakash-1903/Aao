@@ -82,7 +82,7 @@ export async function POST(req: Request) {
     }
 
     if (profileDocument) {
-      uploadedProfileDocument = await uploadToCloudinary(profileDocument, `user_profiles/${email}/profilephoto.pdf`, "raw","profileDocument.pdf");
+      uploadedProfileDocument = await uploadToCloudinary(profileDocument, `user_profiles/${email}`, "raw","profileDocument.pdf");
       console.log("✅ Uploaded Profile Document:", uploadedProfileDocument);
     }
 
